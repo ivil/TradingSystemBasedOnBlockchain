@@ -49,6 +49,7 @@
     
 <script setup lang='ts'>import { reactive, ref } from 'vue';
 import { Message } from 'equal-vue'
+import { signUp } from '@/api/business/user.api';
 const showDialog = ref(false)
 const checked = ref(false)
 const form = reactive({
@@ -62,7 +63,9 @@ const submit = () => {
     Message.success({
         text: 'welcome!'
     })
-    console.log(form);
+    signUp(form).then(value=>{
+        console.log(value);
+    })
     showDialog.value = false
 }
 </script>

@@ -1,4 +1,4 @@
-package test
+package model
 
 type Todo struct {
 	ID int `json:"id"`
