@@ -19,3 +19,4 @@ func Test(c *gin.Context) {
 		},
 	})
 }
+

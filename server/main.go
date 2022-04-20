@@ -1,14 +1,10 @@
 package main
 
 import (
+	_ "github.com/go-sql-driver/mysql"
 	"server/dao/mysql"
 	"server/router"
-
-	_ "github.com/go-sql-driver/mysql"
 )
-
-// url->controller->logic->model
-// 请求来了 -> 控制器 -> 业务逻辑 -> 模型层的增删改查
 
 func main() {
 	// 连接数据库
