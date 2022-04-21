@@ -1,19 +1,17 @@
 package router
 
 import (
-	"server/controller"
-
 	"github.com/gin-gonic/gin"
+	"server/controller"
 )
 
 func userRouter(r *gin.Engine) {
-	r.GET("/test", controller.Test)
-
 	// 路由组
 	userGroup := r.Group("user")
 	{
-		// 待办事项
-		// 添加
+		// 注册
 		userGroup.POST("/signUp", controller.SignUp)
+		// 登录
+		userGroup.POST("/signIn", controller.SignIn)
 	}
 }

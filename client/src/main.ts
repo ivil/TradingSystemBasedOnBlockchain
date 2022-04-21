@@ -14,4 +14,5 @@ const elements = [
 elements.forEach(el => {
     app.use(el)
 })
+
 app.mount('#app')

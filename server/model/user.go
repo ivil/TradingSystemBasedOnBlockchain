@@ -1,6 +1,7 @@
 package model
 
 import (
+	"errors"
 	"log"
 	"server/dao/mysql"
 )
@@ -17,6 +18,7 @@ type SignUp struct {
 	Email       string `json:"email"`
 }
 
+// 注册
 func CreateUser(signUp *SignUp) (err error) {
 	statement, err := mysql.DB.Prepare("insert into user set username=?,password=?,phoneNumber=?,nickname=?,email=?")
 	log.Println(signUp)
@@ -30,4 +32,28 @@ func CreateUser(signUp *SignUp) (err error) {
 		log.Println(res.LastInsertId())
 	}
 	return err
+}
+
+// 登录
+type SignIn struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
+func QueryLoginInfo(signIn *SignIn) (option bool, err error) {
+	// statement 语句
+	rows, err := mysql.DB.Query("select password from user where username = ?", signIn.Username)
+	if err != nil {
+		return false, errors.New("查询出错了！")
+	} else {
+		var password string
+		for rows.Next() {
+			rows.Scan(&password)
+		}
+		if password == signIn.Password {
+			return true, nil
+		} else {
+			return false, errors.New("密码不一致！")
+		}
+	}
 }

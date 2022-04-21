@@ -5,3 +5,8 @@ type signUp = {
     nickname: string
     email: string
 }
+
+type signIn = {
+    username: string
+    password: string
+}
