@@ -12,8 +12,8 @@
             <!-- <it-input prefix-icon="search" status="success" /> -->
             <span>买能源</span>
             <span>发现</span>
-            <span>交易</span>
-            <span>金融服务</span>
+            <span @click="router.push('/market')">交易</span>
+            <span @click="router.push('/info')">行情</span>
             <span>新手学院</span>
             <span>用户支持</span>
             <span>更多</span>
@@ -21,17 +21,17 @@
         <template v-if="true">
             <div>
                 <span>
-                    <it-button @click="signInDialog = true" type="primary">Sign in</it-button>
+                    <it-button @click="signInDialog = true" type="primary">登录</it-button>
                 </span>
                 <span>
-                    <it-button @click="signUpDialog = true" type="primary">Sign up</it-button>
+                    <it-button @click="signUpDialog = true" type="primary">注册</it-button>
                 </span>
             </div>
         </template>
         <template v-if="false">
             <div>
                 <span>
-                    <it-button type="primary">Sign out</it-button>
+                    <it-button type="primary">退出登录</it-button>
                 </span>
             </div>
         </template>
@@ -118,7 +118,7 @@
 <script setup lang='ts'>import { reactive, ref } from 'vue';
 import { Message } from 'equal-vue'
 import { signUp, signIn } from '@/api/business/user.api';
-import termsOfService from '@/utils/termsOfService'
+import router from '@/router/index'
 const signUpDialog = ref(false)
 const checked = ref(false)
 const signInDialog = ref(false)

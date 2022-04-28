@@ -10,7 +10,12 @@ const homeRouter: Array<RouteRecordRaw> = [
     {
         path: '/info',
         name: 'ShowInfo',
-        component: () => import("@/views/home/ShowInfo.vue")
+        component: () => import("@/views/display/ShowInfo.vue")
+    },
+    {
+        path: '/market',
+        name: 'MarketPlace',
+        component: () => import("@/views/transaction/MarketPlace.vue")
     },
 ]
 

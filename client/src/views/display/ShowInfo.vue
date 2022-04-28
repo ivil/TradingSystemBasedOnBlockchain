@@ -4,7 +4,25 @@
     </div>
     <div class="statistics">
         <div class="aside">
-            <div>实时统计</div>
+            <div>
+                <h5>实时统计</h5>
+                <div>
+                    <span>
+                        项目总数
+                    </span>
+                    <span>
+                        项目交付率
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        今日新增项目
+                    </span>
+                    <span>
+                        今日项目交付
+                    </span>
+                </div>
+            </div>
             <div>项目分类</div>
             <div>押金分类的交易数据统计</div>
         </div>
@@ -48,6 +66,7 @@
     justify-content: space-around;
     height: 90vh;
     width: 100vw;
+    overflow: hidden;
     .center{
         width: 50%;
         background-color: wheat;
@@ -63,6 +82,14 @@
         height: 100%;
         div{
             height: 33.3%;
+            h5{
+                text-align: center;
+            }
+            div{
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+            }
         }
     }
 }
