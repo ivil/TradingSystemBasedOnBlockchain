@@ -4,31 +4,46 @@
             <ul>
                 <li>名称</li>
                 <div class="interval"></div>
-                <li><input type="text"></li>
+                <li><input v-model="form.name" type="text"></li>
             </ul>
             <ul>
                 <li>价格</li>
                 <div class="interval"></div>
-                <li><input type="text"></li>
+                <li><input v-model="form.price" type="text"></li>
             </ul>
             <ul>
-                <li>库存</li>
+                <li>数量</li>
                 <div class="interval"></div>
-                <li><input type="text"></li>
+                <li><input v-model="form.count" type="text"></li>
             </ul>
             <ul>
                 <li>描述</li>
                 <div class="interval"></div>
-                <li><input type="text"></li>
+                <li><input v-model="form.description" type="text"></li>
             </ul>
             <ul>
-                <it-button type="success" outlined>release</it-button>
+                <li>
+                    <it-button @click="release" type="success" outlined>release</it-button>
+                </li>
             </ul>
         </div>
     </div>
 </template>
     
 <script setup lang='ts'>
+import { postProduct } from '@/web3/web3.api'
+import { reactive } from 'vue';
+
+const form = reactive({
+    name: "",
+    price: 0,
+    count: 0,
+    description: ""
+})
+const release = async () => {
+    const value = await postProduct(form)
+    console.log(value);
+}
 
 </script>
     

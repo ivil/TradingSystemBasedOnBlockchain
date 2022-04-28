@@ -2,9 +2,11 @@
     <div class="nav">
         <span></span>
         <span></span>
-        <span></span>
         <span>
-            <it-button type="success" outlined @click="connectWallet">连接钱包</it-button>
+            <it-button type="success" outlined @click="router.push('/demandsRelease')">发布商品</it-button>
+        </span>
+        <span>
+            <it-button type="success" outlined @click="getProducts">获取当前商品列表</it-button>
         </span>
     </div>
     <div class="body">
@@ -12,15 +14,15 @@
             <ul>
                 <li>商品信息</li>
                 <li>价格</li>
-                <li>库存</li>
+                <li>数量</li>
                 <li>描述</li>
             </ul>
-            <template v-for="item in 11">
+            <template v-for="(item, index) in (products as lists)" :key="index">
                 <div>
-                    <div>1</div>
-                    <span>2</span>
-                    <span>3</span>
-                    <span>4</span>
+                    <div> {{ item.name }} </div>
+                    <span> {{ item.price }} </span>
+                    <span> {{ item.count }} </span>
+                    <span> {{ item.description }} </span>
                 </div>
             </template>
         </div>
@@ -28,15 +30,14 @@
 </template>
     
 <script setup lang='ts'>
-const Web3 = require('web3')
-const connectWallet = () => {
-    (window as any).ethereum.enable().then(async (value: any) => {
-        console.log(value);
-
-    }, (error: any) => {
-        console.log(error);
-
-    })
+import { getProductList } from '@/web3/web3.api'
+import { ref } from 'vue';
+import router from '@/router/index'
+const products = ref([])
+const getProducts = async () => {
+    const value = await getProductList()
+    console.log(value);
+    products.value = value
 }
 </script>
     

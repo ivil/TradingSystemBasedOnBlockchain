@@ -5,3 +5,4 @@ declare interface Window {
 }
 
 window.ethereum = window.ethereum || {}
+
