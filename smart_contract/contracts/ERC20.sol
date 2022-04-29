@@ -22,45 +22,55 @@ contract ERC20 is IERC20 {
     // 指令仅在当前合约内（包括其所有功能内）有效，并且在使用该合约的合约外无效。
     using SafeMath for uint256;
 
-    string private _name;   //代币名称
+    string private _name; //代币名称
     string private _symbol; //代币符号
-    // uint8 private _decimal;//代币小数点位数
 
-    address private root;  //铸币者
+    address private root; //超级管理员
 
     mapping(address => uint256) private _balances;
 
     mapping(address => mapping(address => uint256)) private _allowed;
 
-    uint256 private _totalSupply;   //代币总量
+    uint256 private _totalSupply = 21000000; //代币总量
 
-    constructor(string memory name,string memory symbol){
+    constructor(string memory name, string memory symbol) {
         _name = name;
         _symbol = symbol;
-        // _decimal = decimal;
         root = msg.sender;
-        _balances[root] = 1000000;
+        _balances[root] = _totalSupply;
     }
 
     // 获取代币名称
-    function getTokenName() public view returns(string memory){
+    function getTokenName() public view returns (string memory) {
         return _name;
     }
 
+    // 修改代币名称
+    function updateTokenName(string memory newName) public {
+        require(msg.sender == root,"Only root can update the tokenName!");
+        _name = newName;
+    }
+
     // 获取代币符号
-    function getTokenSymbol() public view returns(string memory){
+    function getTokenSymbol() public view returns (string memory) {
         return _symbol;
     }
 
+    // 修改代币符号
+    function updateTokenSymbol(string memory newSymbol)public{
+        require(msg.sender==root,"Only root can update the tokenSymbol!");
+        _symbol = newSymbol;
+    }
+
     /**
-     * @dev Total number of tokens in existence 
+     * @dev 获取代币总量
      */
     function totalSupply() public view returns (uint256) {
         return _totalSupply;
     }
 
     /**
-     * @dev Gets the balance of the specified address.
+     * @dev 查看对应账号的代币余额
      * @param owner The address to query the balance of.
      * @return An uint256 representing the amount owned by the passed address.
      */
@@ -70,6 +80,7 @@ contract ERC20 is IERC20 {
 
     /**
      * @dev Function to check the amount of tokens that an owner allowed to a spender.
+     * @dev 返回授权花费的代币数
      * @param owner address The address which owns the funds.
      * @param spender address The address which will spend the funds.
      * @return A uint256 specifying the amount of tokens still available for the spender.
@@ -83,6 +94,7 @@ contract ERC20 is IERC20 {
     }
 
     /**
+     * @dev 实现转账交易，用于给用户发送代币（从我们的账户里）
      * @dev Transfer token for a specified address
      * @param to The address to transfer to.
      * @param value The amount to be transferred.
@@ -93,24 +105,29 @@ contract ERC20 is IERC20 {
 
         _balances[msg.sender] = _balances[msg.sender].sub(value);
         _balances[to] = _balances[to].add(value);
+        // add() 将接收被调用的对象作为他们第一个参数
         emit Transfer(msg.sender, to, value);
         return true;
     }
 
     // 创建通证
-    function createToken(uint value) public returns(bool){
-        require(msg.sender == root);
+    function createToken(uint256 value) public returns (bool) {
+        require(msg.sender == root,"Only the root can create token!");
+        _balances[msg.sender] = _balances[msg.sender].add(value);
         _totalSupply = _totalSupply.add(value);
         return true;
     }
+
     // 销毁通证
-    function destoryToken(uint value) public returns(bool){
-        require(msg.sender == root);
+    function destoryToken(uint256 value) public returns (bool) {
+        require(msg.sender == root,"Only the root can destory token!");
+        _balances[msg.sender] = _balances[msg.sender].sub(value);
         _totalSupply = _totalSupply.sub(value);
         return true;
     }
 
     /**
+     * @dev 授权用户可代表我们花费的代币数
      * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.
      * Beware that changing an allowance with this method brings the risk that someone may use both the old
      * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this
@@ -128,6 +145,7 @@ contract ERC20 is IERC20 {
     }
 
     /**
+     * @dev 给被授权的用户使用，他可以从我们（参数from）的账户里发送代币给其他用户(参数to)
      * @dev Transfer tokens from one address to another
      * @param from address The address which you want to send tokens from
      * @param to address The address which you want to transfer to
@@ -158,7 +176,10 @@ contract ERC20 is IERC20 {
      * @param spender The address which will spend the funds.
      * @param addedValue The amount of tokens to increase the allowance by.
      */
-    function increaseAllowance(address spender, uint256 addedValue) public returns (bool){
+    function increaseAllowance(address spender, uint256 addedValue)
+        public
+        returns (bool)
+    {
         require(spender != address(0));
 
         _allowed[msg.sender][spender] = (

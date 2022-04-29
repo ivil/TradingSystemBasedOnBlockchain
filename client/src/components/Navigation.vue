@@ -11,7 +11,7 @@
         <div class="menu">
             <!-- <it-input prefix-icon="search" status="success" /> -->
             <span>买能源</span>
-            <span>发现</span>
+            <span @click="router.push('/accountInfo')">发现</span>
             <span @click="router.push('/market')">交易</span>
             <span @click="router.push('/info')">行情</span>
             <span>新手学院</span>
