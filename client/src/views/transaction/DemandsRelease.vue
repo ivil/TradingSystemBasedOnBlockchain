@@ -25,6 +25,9 @@
                 <li>
                     <it-button @click="release" type="success" outlined>release</it-button>
                 </li>
+                <li>
+                    <it-button @click="mock" type="success" outlined>mock</it-button>
+                </li>
             </ul>
         </div>
     </div>
@@ -33,6 +36,7 @@
 <script setup lang='ts'>
 import { postProduct } from '@/web3/web3.api'
 import { reactive } from 'vue';
+const Mock = require('mockjs')
 
 const form = reactive({
     name: "",
@@ -40,11 +44,24 @@ const form = reactive({
     count: 0,
     description: ""
 })
+
 const release = async () => {
     const value = await postProduct(form)
     console.log(value);
 }
 
+const mock = () => {
+    const virtualData = Mock.mock({
+        name: /[\u4e00-\u9fa5]{8,16}/,
+        price: /[0-9]{0,11}/,
+        count: /[0-9]{1,7}/,
+        description: /[\u4e00-\u9fa5]{11,33}/
+    })
+    form.name = virtualData.name
+    form.price = virtualData.price
+    form.count = virtualData.count
+    form.description = virtualData.description
+}
 </script>
     
 <style lang="less" scoped>

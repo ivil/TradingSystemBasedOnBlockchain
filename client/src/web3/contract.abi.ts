@@ -1,6 +1,6 @@
 const Contract = {
     Market: {
-        address: "0x239f2305B1FD1C16486Ca0502F1633102e8C82a5",
+        address: "0x36f6536a1bdd8b70cc32A9Dab106aee3BE7c6Bc6",
         abi: [
             {
                 "inputs": [
