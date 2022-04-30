@@ -262,8 +262,6 @@ contract TradingSystem is ERC20 {
     using SafeMath for uint256;
     using StringUtils for string;
 
-    string[] temporary;
-
     struct Token {
         string name; //代币名称
         string symbol; //代币符号
@@ -322,7 +320,7 @@ contract TradingSystem is ERC20 {
     {
         require(msg.sender == root, "Only root can create the token !");
         require(
-            !symbol.CompareInternal(symbol),
+            !symbol.CompareInternal("IVIL"),
             "The IVIL is can't be destoryed !"
         );
         bool status = false;
@@ -361,21 +359,32 @@ contract TradingSystem is ERC20 {
         return tokens[0];
     }
 
-    // 获取所有通证符号
-    function getAllTokenSymbol() public returns (string[] memory) {
-        delete temporary;
-        for (uint256 i = 0; i < tokens.length; i++) {
-            temporary.push(tokens[i].symbol);
-        }
-        return temporary;
+    // 获取所有通证信息
+    function getAllTokenInfo() public view returns (Token[] memory) {
+        return tokens;
     }
 
-    // 获取通证余额
+    // 获取单个通证余额
     function getTokenBalance(string memory symbol)
         public
         view
         returns (uint256)
     {
         return balance[msg.sender][symbol];
+    }
+
+    // 转账
+    function transferToken(
+        string memory symbol,
+        address to,
+        uint256 value
+    ) public returns (bool) {
+        require(value <= balanceOf(msg.sender), "Insufficient balance !");
+        require(to != address(0));
+        // sub()会将调用它的对象作为第一个参数;
+        balance[msg.sender][symbol] = balance[msg.sender][symbol].sub(value);
+        balance[to][symbol] = balance[to][symbol].add(value);
+        emit Transfer(msg.sender, to, value);
+        return true;
     }
 }
