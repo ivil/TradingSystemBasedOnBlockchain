@@ -274,7 +274,7 @@ contract ERC20 is IERC20 {
 
 //===================================================================================
 
-contract TradingSystem is ERC20 {
+contract IvilWorld is ERC20 {
     using SafeMath for uint256;
     using StringUtils for string;
 
@@ -285,6 +285,7 @@ contract TradingSystem is ERC20 {
         uint256 totalSupply; //代币总量
     }
 
+    address private ice; //掌管被冻结的财产
     address private root; //超级管理员
 
     mapping(address => mapping(string => uint256)) private balance; //代币余额
@@ -384,7 +385,7 @@ contract TradingSystem is ERC20 {
 
     // 根据代币符号定位token
     function getLocationBySymbol(string memory symbol)
-        private
+        internal
         view
         returns (uint256, bool)
     {
@@ -419,7 +420,20 @@ contract TradingSystem is ERC20 {
         view
         returns (uint256)
     {
+        (, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, " The token is not existed ! ");
         return balance[msg.sender][symbol];
+    }
+
+    // 查询指定地址的指定token余额
+    function getSpecificTokenBalance(string memory symbol, address who)
+        internal
+        view
+        returns (uint256)
+    {
+        (, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, " The token is not existed ! ");
+        return balance[who][symbol];
     }
 
     // 转账
@@ -430,7 +444,7 @@ contract TradingSystem is ERC20 {
     ) public returns (bool) {
         (, bool isExisted) = getLocationBySymbol(symbol);
         require(isExisted, "The token is not existed");
-        require(value <= balanceOf(msg.sender), "Insufficient balance !");
+        require(value <= getTokenBalance(symbol), "The token is not enough !");
         require(to != address(0));
         balance[msg.sender][symbol] = balance[msg.sender][symbol].sub(value);
         balance[to][symbol] = balance[to][symbol].add(value);
@@ -438,6 +452,106 @@ contract TradingSystem is ERC20 {
         return true;
     }
 
+    // 冻结token
+    function freezeToken(string memory symbol, uint256 value)
+        internal
+        returns (bool)
+    {
+        (, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, "The token is not existed");
+        require(value <= getTokenBalance(symbol), "The token is not enough !");
+        balance[msg.sender][symbol] = balance[msg.sender][symbol].sub(value);
+        balance[ice][symbol] = balance[ice][symbol].add(value);
+        emit Transfer(msg.sender, ice, value);
+        return true;
+    }
+
+    // 解冻token
+    function unfreezeToken(string memory symbol, uint256 value)
+        internal
+        returns (bool)
+    {
+        (, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, "The token is not existed");
+        balance[ice][symbol] = balance[ice][symbol].sub(value);
+        balance[msg.sender][symbol] = balance[msg.sender][symbol].add(value);
+        emit Transfer(ice, msg.sender, value);
+        return true;
+    }
 }
 
+// ===========================================================================
 
+contract TradingSystem is IvilWorld {
+    using SafeMath for uint256;
+    using StringUtils for string;
+
+    struct Transaction {
+        address sender; //需求发布者
+        string symbol; //能源类型
+        uint256 value; //能源数量
+        uint256 price; //价格
+        bool status; //交易状态，是否成功
+        uint256 index; //交易流水号
+    }
+
+    mapping(uint256 => Transaction) private tradingPool; //交易池子
+    uint256 private counter;
+
+    address private root; //超级管理员
+
+    constructor() {
+        root = msg.sender;
+    }
+
+    // 获取当前交易池深度
+    function depthOfPool() public view returns (uint256) {
+        return counter;
+    }
+
+    // 发布
+    function sell(
+        string memory symbol,
+        uint256 value,
+        uint256 price
+    ) public {
+        (, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, "The token is not existed !");
+        uint256 temp = getTokenBalance(symbol);
+        require(value <= temp, "The token is not enough !");
+        Transaction memory deal = Transaction(
+            msg.sender,
+            symbol,
+            value,
+            price,
+            false,
+            counter
+        );
+        tradingPool[counter] = deal;
+        freezeToken(symbol, value);
+    }
+
+    // 取消发布
+    function cancelSell(uint256 index) public {
+        require(index <= counter, "The transaction is not existed !");
+        require(
+            !tradingPool[index].status,
+            "The transaction has already been completed !"
+        );
+        require(msg.sender == tradingPool[index].sender);
+        unfreezeToken(tradingPool[index].symbol, tradingPool[index].value);
+        tradingPool[index].status = true;
+    }
+
+    // 响应
+    function buy(uint256 index) public {
+        require(index <= counter, "The transaction is not existed !");
+        require(
+            !tradingPool[index].status,
+            "The transaction has already been completed !"
+        );
+        transfer(tradingPool[index].sender, tradingPool[index].price);
+        unfreezeToken(tradingPool[index].symbol, tradingPool[index].value);
+        tradingPool[index].status = true;
+    }
+}
