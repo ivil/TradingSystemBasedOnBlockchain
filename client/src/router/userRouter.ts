@@ -6,11 +6,7 @@ const userRouter: Array<RouteRecordRaw> = [
         name: '/MyWealth',
         component: () => import("@/views/user/account/MyWealth.vue")
     },
-    {
-        path: '/accountInfo',
-        name: 'AccountInfo',
-        component: () => import("@/views/user/account/AccountInfo.vue")
-    },
+    
 ]
 
 

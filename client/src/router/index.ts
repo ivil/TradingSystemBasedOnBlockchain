@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from 'vue-router'
 import userRouter from '@/router/userRouter'
 import dealRouter from '@/router/dealRouter'
+import adminRouter from '@/router/adminRouter'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -19,6 +20,7 @@ const routes: Array<RouteRecordRaw> = [
     },
     ...userRouter,
     ...dealRouter,
+    ...adminRouter,
   },
   {
     path: '/:catchAll(.*)', // 不识别的path自动匹配404
