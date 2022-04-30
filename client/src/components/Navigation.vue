@@ -10,13 +10,10 @@
         </div>
         <div class="menu">
             <!-- <it-input prefix-icon="search" status="success" /> -->
-            <span>买能源</span>
-            <span @click="router.push('/accountInfo')">发现</span>
-            <span @click="router.push('/market')">交易</span>
-            <span @click="router.push('/info')">行情</span>
-            <span>新手学院</span>
-            <span>用户支持</span>
-            <span>更多</span>
+            <span @click="router.push('/')">购买能源</span>
+            <span @click="router.push('/market')">交易市场</span>
+            <span @click="router.push('/accountInfo')">我的资产</span>
+            <span @click="router.push('/info')">最近行情</span>
         </div>
         <template v-if="true">
             <div>

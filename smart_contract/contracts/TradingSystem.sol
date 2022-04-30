@@ -63,7 +63,7 @@ library SafeMath {
 /**
  *@dev 字符串工具类,比较两个字符串是否相同
  */
-library SafeMath {
+library StringUtils {
     function CompareInternal(string memory a, string memory b)
         internal
         pure

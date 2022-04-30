@@ -3,7 +3,7 @@ import { contractInstance } from '@/web3/common.api'
 
 /**
  * 
- * @returns 生态积分符号
+ * @returns 生态积分全名
  */
 export const name = async () => {
     const [contract] = await contractInstance()
@@ -12,11 +12,20 @@ export const name = async () => {
 
 /**
  * 
+ * @returns 生态积分符号
+ */
+ export const symbol = async () => {
+    const [contract] = await contractInstance()
+    return await contract.methods.symbol().call()
+}
+
+/**
+ * 
  * @returns 生态积分余额
  */
 export const balanceOf = async () => {
-    const [contract] = await contractInstance()
-    return await contract.methods.balanceOf().call()
+    const [contract,account] = await contractInstance()
+    return await contract.methods.balanceOf(account).call()
 }
 
 /**
@@ -46,8 +55,8 @@ export const transfer = async (to: string, value: number) => {
  * @returns 
  */
 export const getTokenInfo = async (symbol: string) => {
-    const [contract, account] = await contractInstance()
-    return await contract.methods.getTokenInfo(symbol).send({ from: account })
+    const [contract] = await contractInstance()
+    return await contract.methods.getTokenInfo(symbol).call()
 }
 
 /**

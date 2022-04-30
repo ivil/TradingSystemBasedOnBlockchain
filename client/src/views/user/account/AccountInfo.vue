@@ -7,8 +7,16 @@
                     余额
                 </li>
                 <li>
-                    <span> {{tokenName}} </span>
-                    <span> {{balance}} </span>
+                    <span> {{ balance }} </span>&nbsp;
+                    <span> {{ tokenSymbol }} </span>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    积分总发行量&nbsp;
+                </li>
+                <li>
+                    <span> {{ total }} </span>
                 </li>
             </ul>
             <ul>
@@ -56,14 +64,26 @@
 </template>
     
 <script setup lang='ts'>
-import {name} from '@/web3/user.api'
+import { symbol, balanceOf,totalSupply,getTokenInfo } from '@/web3/user.api'
 import { ref } from 'vue';
-const tokenName = ref('')
+const tokenSymbol = ref('')
 const balance = ref('')
+const total = ref('')
 
-const refresh = ()=>{
-    name().then(value=>{
+const refresh = () => {
+    symbol().then(value => {
+        tokenSymbol.value = value
+    })
+    balanceOf().then(value => {
+        balance.value = value
+
+    })
+    totalSupply().then(value=>{
+        total.value = value
+    })
+    getTokenInfo("IVIL").then(value=>{
         console.log(value);
+        
     })
 }
 

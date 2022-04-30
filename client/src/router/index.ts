@@ -1,14 +1,29 @@
 import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from 'vue-router'
-import homeRouter from '@/router/homeRouter'
-import displayRouter from '@/router/displayRouter'
+import userRouter from '@/router/userRouter'
 import dealRouter from '@/router/dealRouter'
-import accountRouter from '@/router/accountRouter'
 
 const routes: Array<RouteRecordRaw> = [
-  ...homeRouter,
-  ...displayRouter,
-  ...dealRouter,
-  ...accountRouter
+  {
+    path: '/',
+    name: "HomeView",
+    component: () => import("@/views/home/HomeView.vue")
+  },
+  {
+    path: '/notFound',
+    name: 'NotFound',
+    component: () => import('../components/NotFound.vue'),
+    meta: {
+      keepAlive: true,
+      isTab: false,
+      isAuth: false,
+    },
+    ...userRouter,
+    ...dealRouter,
+  },
+  {
+    path: '/:catchAll(.*)', // 不识别的path自动匹配404
+    redirect: '/notFound',
+  },
 ]
 
 const router = createRouter({
