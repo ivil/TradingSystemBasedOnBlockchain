@@ -60,6 +60,9 @@ library SafeMath {
     }
 }
 
+/**
+ *@dev 字符串工具类,比较两个字符串是否相同
+ */
 library StringUtils {
     function CompareInternal(string memory a, string memory b)
         internal
@@ -124,7 +127,7 @@ contract ERC20 is IERC20 {
 
     string private _name = "ivil.world"; //代币名称
     string private _symbol = "IVIL"; //代币符号
-    uint256 private _decimals = 9; //小数位数，可拆分的最小单位
+    uint8 private _decimals = 9; //小数位数，可拆分的最小单位
     uint256 private _totalSupply = 21000000; //积分总量
 
     mapping(address => uint256) private _balances;
@@ -135,7 +138,19 @@ contract ERC20 is IERC20 {
 
     constructor() {
         root = msg.sender;
-        _balances[root] = _totalSupply;
+        _balances[msg.sender] = _balances[msg.sender].add(_totalSupply);
+    }
+
+    function name() public view returns (string memory) {
+        return _name;
+    }
+
+    function symbol() public view returns (string memory) {
+        return _symbol;
+    }
+
+    function decimals() public view returns (uint8) {
+        return _decimals;
     }
 
     // 铸造生态积分
@@ -149,6 +164,7 @@ contract ERC20 is IERC20 {
     // 销毁生态积分
     function destoryIVIL(uint256 value) public returns (bool) {
         require(msg.sender == root, "Only the root can destory token!");
+        require(_balances[msg.sender] >= value, "Insufficient balance !");
         _balances[msg.sender] = _balances[msg.sender].sub(value);
         _totalSupply = _totalSupply.sub(value);
         return true;
@@ -265,14 +281,13 @@ contract TradingSystem is ERC20 {
     struct Token {
         string name; //代币名称
         string symbol; //代币符号
-        uint256 decimals; //代币小数位数，代币最小单位，2可以表示我们可以拥有0.01个代币
+        uint8 decimals; //代币小数位数，代币最小单位，2可以表示我们可以拥有0.01个代币
         uint256 totalSupply; //代币总量
     }
 
     address private root; //超级管理员
 
-    //代币余额
-    mapping(address => mapping(string => uint256)) private balance;
+    mapping(address => mapping(string => uint256)) private balance; //代币余额
 
     Token[] private tokens;
     /*
@@ -282,16 +297,18 @@ contract TradingSystem is ERC20 {
     Token private godToken = Token("ivil.world", "IVIL", 9, 21000000); // 创世token,生态积分
 
     constructor() {
-        tokens.push(godToken);
         root = msg.sender;
-        balance[root][godToken.symbol] = godToken.totalSupply;
+        tokens.push(godToken);
+        balance[msg.sender][godToken.symbol] = balance[msg.sender][
+            godToken.symbol
+        ].add(godToken.totalSupply);
     }
 
     // 铸造通证
     function createToken(
         string memory name,
         string memory symbol,
-        uint256 decimals,
+        uint8 decimals,
         uint256 total
     ) public returns (Token[] memory) {
         require(msg.sender == root, "Only root can create the token !");
@@ -310,6 +327,8 @@ contract TradingSystem is ERC20 {
         }
         Token memory token = Token(name, symbol, decimals, total);
         tokens.push(token);
+        balance[msg.sender][token.symbol] = balance[msg.sender][token.symbol]
+            .add(token.totalSupply);
         return tokens;
     }
 
@@ -344,19 +363,49 @@ contract TradingSystem is ERC20 {
         return tokens;
     }
 
+    // 增发指定token
+    function IncreaseToken(string memory symbol, uint256 value) public {
+        require(msg.sender == root, "Only root can add the token !");
+        (uint256 index, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, "The token is not existed !");
+        tokens[index].totalSupply = tokens[index].totalSupply.add(value);
+        balance[msg.sender][symbol] = balance[msg.sender][symbol].add(value);
+    }
+
+    // 销毁部分指定token
+    function decreaseToken(string memory symbol, uint256 value) public {
+        require(msg.sender == root, "Only root can add the token !");
+        (uint256 index, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, "The token is not existed !");
+        require(balance[msg.sender][symbol] >= value, "Insufficient balance !");
+        tokens[index].totalSupply = tokens[index].totalSupply.sub(value);
+        balance[msg.sender][symbol] = balance[msg.sender][symbol].sub(value);
+    }
+
     // 根据代币符号定位token
     function getLocationBySymbol(string memory symbol)
         private
         view
-        returns (Token memory)
+        returns (uint256, bool)
     {
         for (uint256 i = 0; i < tokens.length; i++) {
             if (tokens[i].symbol.CompareInternal(symbol)) {
-                return tokens[i];
+                return (i, true);
             }
         }
         require(false, "The specified token was not found !");
-        return tokens[0];
+        return (0, false);
+    }
+
+    // 获取指定token全部信息
+    function getTokenInfo(string memory symbol)
+        public
+        view
+        returns (Token memory)
+    {
+        (uint256 index, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, " The token is not existed ! ");
+        return tokens[index];
     }
 
     // 获取所有通证信息
@@ -379,12 +428,16 @@ contract TradingSystem is ERC20 {
         address to,
         uint256 value
     ) public returns (bool) {
+        (, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, "The token is not existed");
         require(value <= balanceOf(msg.sender), "Insufficient balance !");
         require(to != address(0));
-        // sub()会将调用它的对象作为第一个参数;
         balance[msg.sender][symbol] = balance[msg.sender][symbol].sub(value);
         balance[to][symbol] = balance[to][symbol].add(value);
         emit Transfer(msg.sender, to, value);
         return true;
     }
+
 }
+
+
