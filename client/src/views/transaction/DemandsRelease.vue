@@ -34,7 +34,7 @@
 </template>
     
 <script setup lang='ts'>
-import { postProduct } from '@/web3/web3.api'
+// import { postProduct } from '@/web3/web3.api'
 import { reactive } from 'vue';
 const Mock = require('mockjs')
 
@@ -46,8 +46,8 @@ const form = reactive({
 })
 
 const release = async () => {
-    const value = await postProduct(form)
-    console.log(value);
+    // const value = await postProduct(form)
+    // console.log(value);
 }
 
 const mock = () => {

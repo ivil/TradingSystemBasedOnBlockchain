@@ -30,14 +30,14 @@
 </template>
     
 <script setup lang='ts'>
-import { getProductList } from '@/web3/web3.api'
+// import { getProductList } from '@/web3/web3.api'
 import { ref } from 'vue';
 import router from '@/router/index'
 const products = ref([])
 const getProducts = async () => {
-    const value = await getProductList()
-    console.log(value);
-    products.value = value
+    // const value = await getProductList()
+    // console.log(value);
+    // products.value = value
 }
 </script>
     

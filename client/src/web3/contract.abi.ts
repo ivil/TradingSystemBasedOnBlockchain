@@ -1,4 +1,8 @@
 const Contract = {
+    TradingSystem:{
+        address:"",
+        abi:''
+    },
     Market: {
         address: "0x36f6536a1bdd8b70cc32A9Dab106aee3BE7c6Bc6",
         abi: [

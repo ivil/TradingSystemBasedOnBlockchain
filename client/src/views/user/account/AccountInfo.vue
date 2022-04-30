@@ -7,7 +7,8 @@
                     余额
                 </li>
                 <li>
-                    100.00
+                    <span> {{tokenName}} </span>
+                    <span> {{balance}} </span>
                 </li>
             </ul>
             <ul>
@@ -55,9 +56,15 @@
 </template>
     
 <script setup lang='ts'>
+import {name} from '@/web3/user.api'
+import { ref } from 'vue';
+const tokenName = ref('')
+const balance = ref('')
 
 const refresh = ()=>{
-    
+    name().then(value=>{
+        console.log(value);
+    })
 }
 
 const recharge = () => {

@@ -63,7 +63,7 @@ library SafeMath {
 /**
  *@dev 字符串工具类,比较两个字符串是否相同
  */
-library StringUtils {
+library SafeMath {
     function CompareInternal(string memory a, string memory b)
         internal
         pure
@@ -365,7 +365,7 @@ contract IvilWorld is ERC20 {
     }
 
     // 增发指定token
-    function IncreaseToken(string memory symbol, uint256 value) public {
+    function increaseToken(string memory symbol, uint256 value) public {
         require(msg.sender == root, "Only root can add the token !");
         (uint256 index, bool isExisted) = getLocationBySymbol(symbol);
         require(isExisted, "The token is not existed !");
@@ -410,7 +410,7 @@ contract IvilWorld is ERC20 {
     }
 
     // 获取所有通证信息
-    function getAllTokenInfo() public view returns (Token[] memory) {
+    function getAllTokensInfo() public view returns (Token[] memory) {
         return tokens;
     }
 
@@ -495,7 +495,8 @@ contract TradingSystem is IvilWorld {
         uint256 index; //交易流水号
     }
 
-    mapping(uint256 => Transaction) private tradingPool; //交易池子
+    mapping(uint256 => Transaction) private tradingPool; //交易池，包含所有交易
+    Transaction[] private transactions; //用于存放池中未完成的交易
     uint256 private counter;
 
     address private root; //超级管理员
@@ -507,6 +508,17 @@ contract TradingSystem is IvilWorld {
     // 获取当前交易池深度
     function depthOfPool() public view returns (uint256) {
         return counter;
+    }
+
+    // 获取当前交易池中的交易
+    function transactionsOfPool() public returns (Transaction[] memory) {
+        delete transactions; //初始化
+        for (uint256 i; i <= counter; i++) {
+            if (tradingPool[i].status == false) {
+                transactions.push(tradingPool[i]);
+            }
+        }
+        return transactions;
     }
 
     // 发布
