@@ -180,6 +180,9 @@ const signInSubmit = () => {
         display: flex;
         align-items: center;
         justify-content: center;
+        &:nth-child(2){
+            width: 40%;
+        }
 
         &:nth-child(2) {
             width: 40%;
