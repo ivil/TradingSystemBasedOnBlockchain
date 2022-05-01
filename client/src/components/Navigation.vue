@@ -10,10 +10,10 @@
         </div>
         <div class="menu">
             <!-- <it-input prefix-icon="search" status="success" /> -->
-            <span @click="router.push('/')">购买能源</span>
+            <span @click="router.push('/admin')">能源管理</span>
+            <span @click="router.push('/wealth')">我的资产</span>
             <span @click="router.push('/market')">交易市场</span>
-            <span @click="router.push('/accountInfo')">我的资产</span>
-            <span @click="router.push('/info')">最近行情</span>
+            <span @click="router.push('/marketInfo')">最近行情</span>
         </div>
         <template v-if="true">
             <div>
@@ -175,11 +175,15 @@ const signInSubmit = () => {
     }
 
     div {
-        width: 33.3%;
+        width: 30%;
         height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
+
+        &:nth-child(2) {
+            width: 40%;
+        }
 
         span {
             margin-right: 20px;

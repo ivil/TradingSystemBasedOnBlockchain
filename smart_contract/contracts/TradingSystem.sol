@@ -127,7 +127,7 @@ contract ERC20 is IERC20 {
 
     string private _name = "ivil.world"; //代币名称
     string private _symbol = "IVIL"; //代币符号
-    uint8 private _decimals = 9; //小数位数，可拆分的最小单位
+    uint8 private _decimals = 0; //小数位数，可拆分的最小单位
     uint256 private _totalSupply = 21000000; //积分总量
 
     mapping(address => uint256) private _balances;
@@ -218,57 +218,6 @@ contract ERC20 is IERC20 {
         _allowed[from][msg.sender] = _allowed[from][msg.sender].sub(value);
         emit Transfer(from, to, value);
         return true;
-    }
-
-    function increaseAllowance(address spender, uint256 addedValue)
-        public
-        returns (bool)
-    {
-        require(spender != address(0));
-
-        _allowed[msg.sender][spender] = (
-            _allowed[msg.sender][spender].add(addedValue)
-        );
-        emit Approval(msg.sender, spender, _allowed[msg.sender][spender]);
-        return true;
-    }
-
-    function decreaseAllowance(address spender, uint256 subtractedValue)
-        public
-        returns (bool)
-    {
-        require(spender != address(0));
-
-        _allowed[msg.sender][spender] = (
-            _allowed[msg.sender][spender].sub(subtractedValue)
-        );
-        emit Approval(msg.sender, spender, _allowed[msg.sender][spender]);
-        return true;
-    }
-
-    function _mint(address account, uint256 amount) internal {
-        require(account != address(0));
-        _totalSupply = _totalSupply.add(amount);
-        _balances[account] = _balances[account].add(amount);
-        emit Transfer(address(0), account, amount);
-    }
-
-    function _burn(address account, uint256 amount) internal {
-        require(account != address(0));
-        require(amount <= _balances[account]);
-
-        _totalSupply = _totalSupply.sub(amount);
-        _balances[account] = _balances[account].sub(amount);
-        emit Transfer(account, address(0), amount);
-    }
-
-    function _burnFrom(address account, uint256 amount) internal {
-        require(amount <= _allowed[account][msg.sender]);
-
-        _allowed[account][msg.sender] = _allowed[account][msg.sender].sub(
-            amount
-        );
-        _burn(account, amount);
     }
 }
 
@@ -484,7 +433,7 @@ contract IvilWorld is ERC20 {
 
 contract TradingSystem is IvilWorld {
     using SafeMath for uint256;
-    using StringUtils for string;
+    // using StringUtils for string;
 
     struct Transaction {
         address sender; //需求发布者
@@ -494,9 +443,10 @@ contract TradingSystem is IvilWorld {
         bool status; //交易状态，是否成功
         uint256 index; //交易流水号
     }
-
     mapping(uint256 => Transaction) private tradingPool; //交易池，包含所有交易
     Transaction[] private transactions; //用于存放池中未完成的交易
+    mapping(address => Transaction[]) personalPool; //个人交易记录列表
+
     uint256 private counter;
 
     address private root; //超级管理员
@@ -521,6 +471,25 @@ contract TradingSystem is IvilWorld {
         return transactions;
     }
 
+    // 获取个人交易记录
+    function getPersonalPool() public view returns (Transaction[] memory) {
+        return personalPool[msg.sender];
+    }
+
+    // 根据序列号查个人交易记录中的交易
+    function getDealFromPersonalPool(uint256 index)
+        internal
+        view
+        returns (uint256, bool)
+    {
+        for (uint256 i; i < personalPool[msg.sender].length; i++) {
+            if (personalPool[msg.sender][i].index == index) {
+                return (i, true);
+            }
+        }
+        return (0, false);
+    }
+
     // 发布
     function sell(
         string memory symbol,
@@ -540,6 +509,7 @@ contract TradingSystem is IvilWorld {
             counter
         );
         tradingPool[counter] = deal;
+        personalPool[msg.sender].push(deal);
         freezeToken(symbol, value);
     }
 
@@ -553,6 +523,9 @@ contract TradingSystem is IvilWorld {
         require(msg.sender == tradingPool[index].sender);
         unfreezeToken(tradingPool[index].symbol, tradingPool[index].value);
         tradingPool[index].status = true;
+        (uint256 i, bool isExisted) = getDealFromPersonalPool(index);
+        require(isExisted, "you does not have this transaction !");
+        personalPool[msg.sender][i].status = true;
     }
 
     // 响应
@@ -565,5 +538,6 @@ contract TradingSystem is IvilWorld {
         transfer(tradingPool[index].sender, tradingPool[index].price);
         unfreezeToken(tradingPool[index].symbol, tradingPool[index].value);
         tradingPool[index].status = true;
+        personalPool[msg.sender].push(tradingPool[index]);
     }
 }
