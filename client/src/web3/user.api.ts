@@ -72,10 +72,9 @@ export const getAllTokensInfo = async () => {
  * @dev 获取指定通证余额
  * @returns 
  */
-export const getTokenBalance = async (symbol:string) => {
-    const [contract] = await contractInstance()
-    // console.log(contract._provider.selectedAddress);
-    return await contract.methods.getTokenBalance(symbol).call()
+export const getTokenBalance = async (symbol: string) => {
+    const [contract, account] = await contractInstance()
+    return await contract.methods.getTokenBalance(symbol).call({ from: account })
 }
 
 /**

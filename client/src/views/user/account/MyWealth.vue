@@ -121,7 +121,7 @@
 </template>
     
 <script setup lang='ts'>
-import { symbol, balanceOf, totalSupply, transfer, transferToken, getAllTokensInfo, getTokenBalance } from '@/web3/user.api'
+import { symbol, balanceOf, totalSupply, transfer, transferToken, getAllTokensInfo, getTokenBalance, test } from '@/web3/user.api'
 import { reactive, ref } from 'vue';
 
 const form1 = reactive({
@@ -168,25 +168,20 @@ const balance = ref([
     }
 ])
 const submit1_ = () => {
-    getTokenBalance("IVIL").then(value=>{
-        console.log(value);
-    })
     balance.value = []
-    // getAllTokensInfo().then(value => {
-    //     console.log(value);
-    //     value.forEach((el: any) => {
-    //         let token = {
-    //             symbol: '',
-    //             count: ''
-    //         }
-    //         token.symbol = el.symbol;
-    //         getTokenBalance(el.symbol).then(value => {
-    //             console.log(value);
-    //             token.count = value
-    //             balance.value.push(token)
-    //         })
-    //     });
-    // })
+    getAllTokensInfo().then(value => {
+        value.forEach((el: any) => {
+            let token = {
+                symbol: '',
+                count: ''
+            }
+            token.symbol = el.symbol;
+            getTokenBalance(el.symbol).then(value => {
+                token.count = value
+                balance.value.push(token)
+            })
+        });
+    })
 }
 </script>
     

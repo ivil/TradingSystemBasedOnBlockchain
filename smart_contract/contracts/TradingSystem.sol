@@ -369,8 +369,7 @@ contract IvilWorld is ERC20 {
         view
         returns (uint256)
     {
-        (, bool isExisted) = getLocationBySymbol(symbol);
-        require(isExisted, " The token is not existed ! ");
+        getLocationBySymbol(symbol);
         return balance[msg.sender][symbol];
     }
 
