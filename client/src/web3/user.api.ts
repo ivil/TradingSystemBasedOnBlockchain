@@ -14,7 +14,7 @@ export const name = async () => {
  * 
  * @returns 生态积分符号
  */
- export const symbol = async () => {
+export const symbol = async () => {
     const [contract] = await contractInstance()
     return await contract.methods.symbol().call()
 }
@@ -24,7 +24,7 @@ export const name = async () => {
  * @returns 生态积分余额
  */
 export const balanceOf = async () => {
-    const [contract,account] = await contractInstance()
+    const [contract, account] = await contractInstance()
     return await contract.methods.balanceOf(account).call()
 }
 
@@ -119,4 +119,9 @@ export const cancelSell = async (index: number) => {
 export const buy = async (index: number) => {
     const [contract, account] = await contractInstance()
     return await contract.methods.buy(index).send({ from: account })
+}
+
+export const getPersonalPool = async () => {
+    const [contract] = await contractInstance()
+    return await contract.methods.getPersonalPool().call();
 }
