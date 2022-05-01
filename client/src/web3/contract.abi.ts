@@ -1,6 +1,6 @@
 const Contract = {
     TradingSystem: {
-        address: "0xf44a776836869De15888ACb6ae46540d8C308F41",
+        address: "0xb1de99EC94AF1885033F59A9CfF31065AEd72c93",
         abi: [
             {
                 "inputs": [],

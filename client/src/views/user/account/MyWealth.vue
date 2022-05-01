@@ -7,11 +7,7 @@
             <div class="box">
                 <ul>
                     <h4>
-<<<<<<< HEAD
                         <it-button text type="success" @click="getInfo">积分</it-button>
-=======
-                        <it-button text type="success" @click="">积分</it-button>
->>>>>>> 2a6f374c26c99824cd39f72d1558229d1f902a86
                     </h4>
                 </ul>
                 <ul>
@@ -19,16 +15,11 @@
                         可用余额
                     </li>
                     <li>
-<<<<<<< HEAD
                         {{ form1.value2 }}&nbsp;{{ form1.value1 }}
-=======
-                        1000 BTC
->>>>>>> 2a6f374c26c99824cd39f72d1558229d1f902a86
                     </li>
                 </ul>
                 <ul>
                     <li>
-<<<<<<< HEAD
                         积分总发行量
                     </li>
                     <li>
@@ -44,21 +35,11 @@
                     </li>
                     <li>
                         <it-input v-model="form2.value" status="success" placeholder="value" />
-=======
-                        <it-button text type="success" @click="">转账</it-button>
-                    </li>
-                    <li>
-                        <it-input status="success" placeholder="address" />
-                    </li>
-                    <li>
-                        <it-input status="success" placeholder="value" />
->>>>>>> 2a6f374c26c99824cd39f72d1558229d1f902a86
                     </li>
                 </ul>
                 <hr>
                 <ul>
                     <li>
-<<<<<<< HEAD
                         <it-button text type="success" @click="transfer_2">转移能源</it-button>
                     </li>
                     <li>
@@ -69,44 +50,21 @@
                     </li>
                     <li>
                         <it-input v-model="form3.value" status="success" placeholder="value" />
-=======
-                        <it-button text type="success" @click="">转移能源</it-button>
-                    </li>
-                    <li>
-                        <it-input status="success" placeholder="symbol" />
-                    </li>
-                    <li>
-                        <it-input status="success" placeholder="address" />
-                    </li>
-                    <li>
-                        <it-input status="success" placeholder="value" />
->>>>>>> 2a6f374c26c99824cd39f72d1558229d1f902a86
                     </li>
                 </ul>
                 <ul>
                     <h4>
-<<<<<<< HEAD
                         <it-button text type="success" @click="submit1_">持有能源</it-button>
-=======
-                        <it-button text type="success" @click="">持有能源</it-button>
->>>>>>> 2a6f374c26c99824cd39f72d1558229d1f902a86
                     </h4>
                 </ul>
                 <ul>
                     <li>能源名称</li>
                     <li>能源数量</li>
                 </ul>
-<<<<<<< HEAD
                 <template v-for="(item, index) in balance" :key="index">
                     <ul>
                         <li> {{ item.symbol }} </li>
                         <li> {{ item.count }} </li>
-=======
-                <template v-for="item in 7">
-                    <ul>
-                        <li>name</li>
-                        <li>count</li>
->>>>>>> 2a6f374c26c99824cd39f72d1558229d1f902a86
                     </ul>
                 </template>
             </div>
