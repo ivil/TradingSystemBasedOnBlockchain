@@ -347,17 +347,6 @@ contract IvilWorld is ERC20 {
         return (0, false);
     }
 
-    // 获取指定token全部信息
-    // function getTokenInfo(string memory symbol)
-    //     public
-    //     view
-    //     returns (Token memory)
-    // {
-    //     (uint256 index, bool isExisted) = getLocationBySymbol(symbol);
-    //     require(isExisted, " The token is not existed ! ");
-    //     return tokens[index];
-    // }
-
     // 获取所有通证信息
     function getAllTokensInfo() public view returns (Token[] memory) {
         return tokens;
@@ -373,16 +362,6 @@ contract IvilWorld is ERC20 {
         return balance[who][symbol];
     }
 
-    // 查询指定地址的指定token余额
-    // function getSpecificTokenBalance(string memory symbol, address who)
-    //     internal
-    //     view
-    //     returns (uint256)
-    // {
-    //     getLocationOfToken(symbol);
-    //     // require(isExisted, " The token is not existed ! ");
-    //     return balance[who][symbol];
-    // }
 
     // 转账
     function transferToken(
@@ -470,17 +449,6 @@ contract TradingSystem is IvilWorld {
     function transactionsOfPool() public view returns (Transaction[] memory) {
         return tradingPool;
     }
-
-    // 更新未被响应的交易池
-    // function updatePool() internal returns (Transaction[] memory) {
-    //     delete transactions; //初始化
-    //     for (uint256 i; i <= counter; i++) {
-    //         if (tradingPool[i].status == false) {
-    //             transactions.push(tradingPool[i]);
-    //         }
-    //     }
-    //     return transactions;
-    // }
 
     // 获取个人交易记录
     function getPersonalPool() public view returns (Transaction[] memory) {
