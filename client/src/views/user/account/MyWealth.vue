@@ -107,12 +107,15 @@
                     <li>能源名称</li>
                     <li>数量</li>
                     <li>价格</li>
+                    <li>状态</li>
                 </ul>
                 <template v-for="(item, index) in records" :key="index">
                     <ul>
                         <li> {{ item.symbol }} </li>
                         <li> {{ item.value }} </li>
                         <li> {{ item.price }} </li>
+                        <li v-if="item.status === false"> <span style="color: red;">未成交</span> </li>
+                        <li v-if="item.status === true"> <span style="color: green;">已成交</span> </li>
                     </ul>
                 </template>
             </div>
@@ -149,7 +152,8 @@ const records = ref([
     {
         symbol: '',
         value: 0,
-        price: 0
+        price: 0,
+        status: false,
     }
 ])
 const getDealRecords = () => {
