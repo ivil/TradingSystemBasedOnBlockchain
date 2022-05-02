@@ -1,6 +1,6 @@
 const Contract = {
     TradingSystem: {
-        address: "0x79878c51897dab9E294087749B4f7C959231202B",
+        address: "0xD2A737FD2552cB3a9fc705B8A4C4d96ebf94C41E",
         abi: [
             {
                 "inputs": [],
@@ -335,6 +335,11 @@ const Contract = {
                         "internalType": "string",
                         "name": "symbol",
                         "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "who",
+                        "type": "address"
                     }
                 ],
                 "name": "getTokenBalance",
@@ -343,48 +348,6 @@ const Contract = {
                         "internalType": "uint256",
                         "name": "",
                         "type": "uint256"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function",
-                "constant": true
-            },
-            {
-                "inputs": [
-                    {
-                        "internalType": "string",
-                        "name": "symbol",
-                        "type": "string"
-                    }
-                ],
-                "name": "getTokenInfo",
-                "outputs": [
-                    {
-                        "components": [
-                            {
-                                "internalType": "string",
-                                "name": "name",
-                                "type": "string"
-                            },
-                            {
-                                "internalType": "string",
-                                "name": "symbol",
-                                "type": "string"
-                            },
-                            {
-                                "internalType": "uint8",
-                                "name": "decimals",
-                                "type": "uint8"
-                            },
-                            {
-                                "internalType": "uint256",
-                                "name": "totalSupply",
-                                "type": "uint256"
-                            }
-                        ],
-                        "internalType": "struct IvilWorld.Token",
-                        "name": "",
-                        "type": "tuple"
                     }
                 ],
                 "stateMutability": "view",

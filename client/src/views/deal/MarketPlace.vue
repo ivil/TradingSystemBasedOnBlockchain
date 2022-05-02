@@ -14,7 +14,7 @@
                     </li>
                 </ul>
                 <template v-for="(item, index) in deals" :key="index">
-                    <ul v-if="index != 0">
+                    <ul>
                         <li> {{ item.symbol }} </li>
                         <li> {{ item.value }} </li>
                         <li> {{ item.price }} </li>
@@ -44,16 +44,21 @@ const deals = ref([
 ])
 
 const getDeals = () => {
+    deals.value = []
     transactionsOfPool().then(value => {
         console.log(value);
-        deals.value = value
+        value.forEach((el: any) => {
+            if (el.status === false) {
+                deals.value.push(el);
+            }
+        });
     })
 }
 getDeals()
 
 const buyProduct = (index: any) => {
     console.log(index);
-    
+
     buy(Number(index)).then(value => {
         console.log(value);
 

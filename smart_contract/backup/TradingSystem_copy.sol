@@ -316,8 +316,8 @@ contract IvilWorld is ERC20 {
     // 增发指定token
     function increaseToken(string memory symbol, uint256 value) public {
         require(msg.sender == root, "Only root can add the token !");
-        (uint256 index, ) = getLocationOfToken(symbol);
-        // require(isExisted, "The token is not existed !");
+        (uint256 index, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, "The token is not existed !");
         tokens[index].totalSupply = tokens[index].totalSupply.add(value);
         balance[msg.sender][symbol] = balance[msg.sender][symbol].add(value);
     }
@@ -325,15 +325,15 @@ contract IvilWorld is ERC20 {
     // 销毁部分指定token
     function decreaseToken(string memory symbol, uint256 value) public {
         require(msg.sender == root, "Only root can add the token !");
-        (uint256 index, ) = getLocationOfToken(symbol);
-        // require(isExisted, "The token is not existed !");
+        (uint256 index, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, "The token is not existed !");
         require(balance[msg.sender][symbol] >= value, "Insufficient balance !");
         tokens[index].totalSupply = tokens[index].totalSupply.sub(value);
         balance[msg.sender][symbol] = balance[msg.sender][symbol].sub(value);
     }
 
     // 根据代币符号定位token
-    function getLocationOfToken(string memory symbol)
+    function getLocationBySymbol(string memory symbol)
         internal
         view
         returns (uint256, bool)
@@ -343,46 +343,46 @@ contract IvilWorld is ERC20 {
                 return (i, true);
             }
         }
-        require(false, "The token was not found !");
+        require(false, "The specified token was not found !");
         return (0, false);
     }
 
     // 获取指定token全部信息
-    // function getTokenInfo(string memory symbol)
-    //     public
-    //     view
-    //     returns (Token memory)
-    // {
-    //     (uint256 index, bool isExisted) = getLocationBySymbol(symbol);
-    //     require(isExisted, " The token is not existed ! ");
-    //     return tokens[index];
-    // }
+    function getTokenInfo(string memory symbol)
+        public
+        view
+        returns (Token memory)
+    {
+        (uint256 index, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, " The token is not existed ! ");
+        return tokens[index];
+    }
 
     // 获取所有通证信息
     function getAllTokensInfo() public view returns (Token[] memory) {
         return tokens;
     }
 
-    // 获取指定地址单个通证余额
-    function getTokenBalance(string memory symbol, address who)
+    // 获取单个通证余额
+    function getTokenBalance(string memory symbol)
         public
         view
         returns (uint256)
     {
-        getLocationOfToken(symbol);
-        return balance[who][symbol];
+        getLocationBySymbol(symbol);
+        return balance[msg.sender][symbol];
     }
 
     // 查询指定地址的指定token余额
-    // function getSpecificTokenBalance(string memory symbol, address who)
-    //     internal
-    //     view
-    //     returns (uint256)
-    // {
-    //     getLocationOfToken(symbol);
-    //     // require(isExisted, " The token is not existed ! ");
-    //     return balance[who][symbol];
-    // }
+    function getSpecificTokenBalance(string memory symbol, address who)
+        internal
+        view
+        returns (uint256)
+    {
+        (, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, " The token is not existed ! ");
+        return balance[who][symbol];
+    }
 
     // 转账
     function transferToken(
@@ -390,12 +390,9 @@ contract IvilWorld is ERC20 {
         address to,
         uint256 value
     ) public returns (bool) {
-        getLocationOfToken(symbol);
-        // require(isExisted, "The token is not existed");
-        require(
-            value <= getTokenBalance(symbol, msg.sender),
-            "The token is not enough !"
-        );
+        (, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, "The token is not existed");
+        require(value <= getTokenBalance(symbol), "The token is not enough !");
         require(to != address(0));
         balance[msg.sender][symbol] = balance[msg.sender][symbol].sub(value);
         balance[to][symbol] = balance[to][symbol].add(value);
@@ -408,12 +405,9 @@ contract IvilWorld is ERC20 {
         internal
         returns (bool)
     {
-        getLocationOfToken(symbol);
-        // require(isExisted, "The token is not existed");
-        require(
-            value <= getTokenBalance(symbol, msg.sender),
-            "The token is not enough !"
-        );
+        (, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, "The token is not existed");
+        require(value <= getTokenBalance(symbol), "The token is not enough !");
         balance[msg.sender][symbol] = balance[msg.sender][symbol].sub(value);
         balance[ice][symbol] = balance[ice][symbol].add(value);
         emit Transfer(msg.sender, ice, value);
@@ -425,8 +419,8 @@ contract IvilWorld is ERC20 {
         internal
         returns (bool)
     {
-        getLocationOfToken(symbol);
-        // require(isExisted, "The token is not existed");
+        (, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, "The token is not existed");
         balance[ice][symbol] = balance[ice][symbol].sub(value);
         balance[msg.sender][symbol] = balance[msg.sender][symbol].add(value);
         emit Transfer(ice, msg.sender, value);
@@ -448,12 +442,11 @@ contract TradingSystem is IvilWorld {
         bool status; //交易状态，是否成功
         uint256 index; //交易流水号
     }
-    // mapping(uint256 => Transaction) private tradingPool; //交易池，包含所有交易
-    Transaction[] private tradingPool;
-    // Transaction[] private transactions; //用于存放池中未完成的交易
+    mapping(uint256 => Transaction) private tradingPool; //交易池，包含所有交易
+    Transaction[] private transactions; //用于存放池中未完成的交易
     mapping(address => Transaction[]) personalPool; //个人交易记录列表
 
-    uint256 private counter = 0;
+    uint256 private counter;
 
     address private root; //超级管理员
 
@@ -466,21 +459,21 @@ contract TradingSystem is IvilWorld {
         return counter;
     }
 
-    // 获取当前交易池中的所有交易
+    // 获取当前交易池中的交易
     function transactionsOfPool() public view returns (Transaction[] memory) {
-        return tradingPool;
+        return transactions;
     }
 
     // 更新未被响应的交易池
-    // function updatePool() internal returns (Transaction[] memory) {
-    //     delete transactions; //初始化
-    //     for (uint256 i; i <= counter; i++) {
-    //         if (tradingPool[i].status == false) {
-    //             transactions.push(tradingPool[i]);
-    //         }
-    //     }
-    //     return transactions;
-    // }
+    function updatePool() internal returns (Transaction[] memory) {
+        delete transactions; //初始化
+        for (uint256 i; i <= counter; i++) {
+            if (tradingPool[i].status == false) {
+                transactions.push(tradingPool[i]);
+            }
+        }
+        return transactions;
+    }
 
     // 获取个人交易记录
     function getPersonalPool() public view returns (Transaction[] memory) {
@@ -488,17 +481,16 @@ contract TradingSystem is IvilWorld {
     }
 
     // 根据序列号查个人交易记录中的交易
-    function getDealFromPersonalPool(uint256 index, address who)
+    function getDealFromPersonalPool(uint256 index)
         internal
         view
         returns (uint256, bool)
     {
-        for (uint256 i; i < personalPool[who].length; i++) {
-            if (personalPool[who][i].index == index) {
+        for (uint256 i; i < personalPool[msg.sender].length; i++) {
+            if (personalPool[msg.sender][i].index == index) {
                 return (i, true);
             }
         }
-        require(false, "The transaction is not existed !");
         return (0, false);
     }
 
@@ -508,40 +500,42 @@ contract TradingSystem is IvilWorld {
         uint256 value,
         uint256 price
     ) public {
-        getLocationOfToken(symbol);
-        // require(isExisted, "The token is not existed !");
-        require(
-            value <= getTokenBalance(symbol, msg.sender),
-            "The token is not enough !"
-        );
+        (, bool isExisted) = getLocationBySymbol(symbol);
+        require(isExisted, "The token is not existed !");
+        uint256 temp = getTokenBalance(symbol);
+        require(value <= temp, "The token is not enough !");
+        counter++;
         Transaction memory deal = Transaction(
             msg.sender,
             symbol,
             value,
             price,
             false,
-            counter //从0开始计数
+            counter
         );
-        tradingPool.push(deal);
+        tradingPool[counter] = deal;
         personalPool[msg.sender].push(deal);
         freezeToken(symbol, value);
-        counter++;
+
+        updatePool();
     }
 
     // 取消发布
     function cancelSell(uint256 index) public {
         require(index <= counter, "The transaction is not existed !");
         require(
-            tradingPool[index].status == false,
+            !tradingPool[index].status,
             "The transaction has already been completed !"
         );
         require(msg.sender == tradingPool[index].sender);
         unfreezeToken(tradingPool[index].symbol, tradingPool[index].value);
         tradingPool[index].status = true;
-
-        (uint256 i, ) = getDealFromPersonalPool(index, msg.sender);
-        // require(isExisted, "you does not have this transaction !");
+        
+        (uint256 i, bool isExisted) = getDealFromPersonalPool(index);
+        require(isExisted, "you does not have this transaction !");
         personalPool[msg.sender][i].status = true;
+
+        updatePool();
     }
 
     // 响应
@@ -561,11 +555,10 @@ contract TradingSystem is IvilWorld {
 
         personalPool[msg.sender].push(tradingPool[index]);
 
-        // 更新发布者的交易记录
-        (uint256 i, ) = getDealFromPersonalPool(
-            index,
-            tradingPool[index].sender
-        );
+        (uint256 i, bool isExisted) = getDealFromPersonalPool(index);
+        require(isExisted);
         personalPool[tradingPool[index].sender][i].status = true;
+
+        updatePool();
     }
 }

@@ -49,15 +49,15 @@ export const transfer = async (to: string, value: number) => {
     return await contract.methods.transfer(to, value).send({ from: account })
 }
 
-/**
- * @dev 获取指定通证信息
- * @param symbol 通证符号
- * @returns 
- */
-export const getTokenInfo = async (symbol: string) => {
-    const [contract] = await contractInstance()
-    return await contract.methods.getTokenInfo(symbol).call()
-}
+// /**
+//  * @dev 获取指定通证信息
+//  * @param symbol 通证符号
+//  * @returns 
+//  */
+// export const getTokenInfo = async (symbol: string) => {
+//     const [contract] = await contractInstance()
+//     return await contract.methods.getTokenInfo(symbol).call()
+// }
 
 /**
  * @dev 获取全部通证信息
@@ -69,12 +69,12 @@ export const getAllTokensInfo = async () => {
 }
 
 /**
- * @dev 获取指定通证余额
+ * @dev 获取指定地址单个通证余额
  * @returns 
  */
 export const getTokenBalance = async (symbol: string) => {
     const [contract, account] = await contractInstance()
-    return await contract.methods.getTokenBalance(symbol).call({ from: account })
+    return await contract.methods.getTokenBalance(symbol,account).call()
 }
 
 /**
