@@ -460,7 +460,12 @@ contract TradingSystem is IvilWorld {
     }
 
     // 获取当前交易池中的交易
-    function transactionsOfPool() public returns (Transaction[] memory) {
+    function transactionsOfPool() public view returns (Transaction[] memory) {
+        return transactions;
+    }
+
+    // 更新未被响应的交易池
+    function updatePool() internal returns (Transaction[] memory) {
         delete transactions; //初始化
         for (uint256 i; i <= counter; i++) {
             if (tradingPool[i].status == false) {
@@ -499,6 +504,7 @@ contract TradingSystem is IvilWorld {
         require(isExisted, "The token is not existed !");
         uint256 temp = getTokenBalance(symbol);
         require(value <= temp, "The token is not enough !");
+        counter++;
         Transaction memory deal = Transaction(
             msg.sender,
             symbol,
@@ -510,6 +516,8 @@ contract TradingSystem is IvilWorld {
         tradingPool[counter] = deal;
         personalPool[msg.sender].push(deal);
         freezeToken(symbol, value);
+
+        updatePool();
     }
 
     // 取消发布
@@ -522,21 +530,35 @@ contract TradingSystem is IvilWorld {
         require(msg.sender == tradingPool[index].sender);
         unfreezeToken(tradingPool[index].symbol, tradingPool[index].value);
         tradingPool[index].status = true;
+        
         (uint256 i, bool isExisted) = getDealFromPersonalPool(index);
         require(isExisted, "you does not have this transaction !");
         personalPool[msg.sender][i].status = true;
+
+        updatePool();
     }
 
     // 响应
     function buy(uint256 index) public {
+        require(
+            tradingPool[index].sender != msg.sender,
+            "You can not buy your product !"
+        );
         require(index <= counter, "The transaction is not existed !");
         require(
-            !tradingPool[index].status,
+            tradingPool[index].status == false,
             "The transaction has already been completed !"
         );
         transfer(tradingPool[index].sender, tradingPool[index].price);
         unfreezeToken(tradingPool[index].symbol, tradingPool[index].value);
         tradingPool[index].status = true;
+
         personalPool[msg.sender].push(tradingPool[index]);
+
+        (uint256 i, bool isExisted) = getDealFromPersonalPool(index);
+        require(isExisted);
+        personalPool[tradingPool[index].sender][i].status = true;
+
+        updatePool();
     }
 }

@@ -1,6 +1,6 @@
 const Contract = {
     TradingSystem: {
-        address: "0xF3F7EC33743D7AC168ba13f78fe338D7Ee28Bf5B",
+        address: "0x79878c51897dab9E294087749B4f7C959231202B",
         abi: [
             {
                 "inputs": [],
@@ -79,7 +79,8 @@ const Contract = {
                     }
                 ],
                 "stateMutability": "view",
-                "type": "function"
+                "type": "function",
+                "constant": true
             },
             {
                 "inputs": [
@@ -122,7 +123,8 @@ const Contract = {
                     }
                 ],
                 "stateMutability": "view",
-                "type": "function"
+                "type": "function",
+                "constant": true
             },
             {
                 "inputs": [
@@ -210,7 +212,8 @@ const Contract = {
                     }
                 ],
                 "stateMutability": "view",
-                "type": "function"
+                "type": "function",
+                "constant": true
             },
             {
                 "inputs": [
@@ -323,7 +326,8 @@ const Contract = {
                     }
                 ],
                 "stateMutability": "view",
-                "type": "function"
+                "type": "function",
+                "constant": true
             },
             {
                 "inputs": [
@@ -342,7 +346,8 @@ const Contract = {
                     }
                 ],
                 "stateMutability": "view",
-                "type": "function"
+                "type": "function",
+                "constant": true
             },
             {
                 "inputs": [
@@ -383,7 +388,8 @@ const Contract = {
                     }
                 ],
                 "stateMutability": "view",
-                "type": "function"
+                "type": "function",
+                "constant": true
             },
             {
                 "inputs": [
@@ -414,7 +420,8 @@ const Contract = {
                     }
                 ],
                 "stateMutability": "view",
-                "type": "function"
+                "type": "function",
+                "constant": true
             },
             {
                 "inputs": [],
@@ -427,7 +434,8 @@ const Contract = {
                     }
                 ],
                 "stateMutability": "view",
-                "type": "function"
+                "type": "function",
+                "constant": true
             },
             {
                 "inputs": [],
@@ -440,7 +448,8 @@ const Contract = {
                     }
                 ],
                 "stateMutability": "view",
-                "type": "function"
+                "type": "function",
+                "constant": true
             },
             {
                 "inputs": [
@@ -535,7 +544,8 @@ const Contract = {
                     }
                 ],
                 "stateMutability": "view",
-                "type": "function"
+                "type": "function",
+                "constant": true
             },
             {
                 "inputs": [],
@@ -579,8 +589,9 @@ const Contract = {
                         "type": "tuple[]"
                     }
                 ],
-                "stateMutability": "nonpayable",
-                "type": "function"
+                "stateMutability": "view",
+                "type": "function",
+                "constant": true
             },
             {
                 "inputs": [],
@@ -625,7 +636,8 @@ const Contract = {
                     }
                 ],
                 "stateMutability": "view",
-                "type": "function"
+                "type": "function",
+                "constant": true
             },
             {
                 "inputs": [

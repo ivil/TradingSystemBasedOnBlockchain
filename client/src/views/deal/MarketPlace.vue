@@ -13,13 +13,13 @@
                         点击购买
                     </li>
                 </ul>
-                <template v-for="item in 7">
-                    <ul>
-                        <li>ivil</li>
-                        <li>1</li>
-                        <li>1000000</li>
+                <template v-for="(item, index) in deals" :key="index">
+                    <ul v-if="index != 0">
+                        <li> {{ item.symbol }} </li>
+                        <li> {{ item.value }} </li>
+                        <li> {{ item.price }} </li>
                         <li>
-                            <it-button outlined type="success" @click="">购买</it-button>
+                            <it-button outlined type="success" @click="buyProduct(item.index)">购买</it-button>
                         </li>
                     </ul>
                 </template>
@@ -29,7 +29,36 @@
 </template>
     
 <script setup lang='ts'>
+import { transactionsOfPool, buy } from '@/web3/market.api'
+import { ref } from 'vue';
 
+const deals = ref([
+    {
+        sender: '',
+        symbol: '',
+        value: '',
+        price: '',
+        status: '',
+        index: ''
+    }
+])
+
+const getDeals = () => {
+    transactionsOfPool().then(value => {
+        console.log(value);
+        deals.value = value
+    })
+}
+getDeals()
+
+const buyProduct = (index: any) => {
+    console.log(index);
+    
+    buy(Number(index)).then(value => {
+        console.log(value);
+
+    })
+}
 </script>
     
 <style lang="less" scoped>

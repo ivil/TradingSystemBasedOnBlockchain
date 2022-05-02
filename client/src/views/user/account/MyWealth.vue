@@ -76,31 +76,31 @@
                 </ul>
                 <ul>
                     <li>
-                        <it-button text type="success" @click="">出售</it-button>
+                        <it-button text type="success" @click="postProduct">出售</it-button>
                     </li>
                     <li>
-                        <it-input status="success" placeholder="symbol" />
+                        <it-input v-model="product.symbol" status="success" placeholder="symbol" />
                     </li>
                     <li>
-                        <it-input status="success" placeholder="address" />
+                        <it-input v-model="product.value" status="success" placeholder="value" />
                     </li>
                     <li>
-                        <it-input status="success" placeholder="value" />
+                        <it-input v-model="product.price" status="success" placeholder="price" />
                     </li>
                 </ul>
                 <ul>
                     <li>
-                        <it-button text type="success" @click="">取消出售</it-button>
+                        <it-button text type="success" @click="cancel">取消出售</it-button>
                     </li>
                     <li>
-                        <it-input status="success" placeholder="index" />
+                        <it-input v-model="index" status="success" placeholder="index" />
                     </li>
                 </ul>
             </div>
             <div class="box">
                 <ul>
                     <h4>
-                        <it-button text type="success" @click="">交易记录</it-button>
+                        <it-button text type="success" @click="getDealRecords">交易记录</it-button>
                     </h4>
                 </ul>
                 <ul>
@@ -108,11 +108,11 @@
                     <li>数量</li>
                     <li>价格</li>
                 </ul>
-                <template v-for="item in 7">
+                <template v-for="(item, index) in records" :key="index">
                     <ul>
-                        <li>ivil</li>
-                        <li>1</li>
-                        <li>10000</li>
+                        <li> {{ item.symbol }} </li>
+                        <li> {{ item.value }} </li>
+                        <li> {{ item.price }} </li>
                     </ul>
                 </template>
             </div>
@@ -121,8 +121,43 @@
 </template>
     
 <script setup lang='ts'>
-import { symbol, balanceOf, totalSupply, transfer, transferToken, getAllTokensInfo, getTokenBalance, test } from '@/web3/user.api'
+import { sell, cancelSell, getPersonalPool } from '@/web3/market.api'
+import { symbol, balanceOf, totalSupply, transfer, transferToken, getAllTokensInfo, getTokenBalance } from '@/web3/user.api'
 import { reactive, ref } from 'vue';
+
+const index = ref('')
+const cancel = () => {
+    cancelSell(Number(index.value)).then(value => {
+        console.log(value);
+
+    })
+}
+
+const product = reactive({
+    symbol: '',
+    value: 0,
+    price: 0
+})
+const postProduct = () => {
+    sell(product.symbol, product.value, product.price).then(value => {
+        console.log(value);
+
+    })
+}
+
+const records = ref([
+    {
+        symbol: '',
+        value: 0,
+        price: 0
+    }
+])
+const getDealRecords = () => {
+    getPersonalPool().then(value => {
+        console.log(value);
+        records.value = value
+    })
+}
 
 const form1 = reactive({
     value1: '',
