@@ -1,195 +1,73 @@
 <template>
     <div class="nav">
-        <div>
-            <!-- <img class="logo" src="@/assets/logo/ivil.world.png"> -->
-            <h3 style="color: white;font-size: 43px;">
-                <div style="height: 10px;"></div>
-                <span>ivil.world</span>
-            </h3>
-            <span style="width: 100px;"></span>
-        </div>
-        <div class="menu">
-            <!-- <it-input prefix-icon="search" status="success" /> -->
-            <span @click="router.push('/admin')">能源管理</span>
-            <span @click="router.push('/wealth')">我的资产</span>
-            <span @click="router.push('/market')">交易市场</span>
-            <span @click="router.push('/marketInfo')">最近行情</span>
-        </div>
-        <template v-if="true">
-            <div>
-                <span>
-                    <it-button @click="signInDialog = true" type="primary">登录</it-button>
-                </span>
-                <span>
-                    <it-button @click="signUpDialog = true" type="primary">注册</it-button>
-                </span>
-            </div>
-        </template>
-        <template v-if="false">
-            <div>
-                <span>
-                    <it-button type="primary">退出登录</it-button>
-                </span>
-            </div>
-        </template>
+        <span>
+            <h3>ivil.world</h3>
+        </span>
+        <span>
+            <ul>
+                <template v-for="(item, index) in NavMenu" :key="index">
+                    <li @click="toModule(item)"> {{ item.name }} </li>
+                </template>
+            </ul>
+        </span>
+        <span>
+        </span>
     </div>
-    <!-- 注册 -->
-    <it-modal v-model="signUpDialog">
-        <template #body>
-            <div class="signupmodal">
-                <h2><span>Sign up</span><span style="float: right;" @click="signUpDialog = false">X</span></h2>
-                <it-input v-model="signUpForm.username" labelTop="Username" prefix-icon="account_circle"
-                    placeholder="Unique Username" />
-                <div class="divider"></div>
-                <it-input v-model="signUpForm.password" labelTop="Password" prefix-icon="lock" type="password"
-                    placeholder="Must have at least 6 characters" />
-                <div class="divider"></div>
-                <div class="signupmodal-wrap-inputs" style="display:flex;">
-                    <it-input v-model="signUpForm.phoneNumber" style="flex:1" labelTop="Phone Number"
-                        placeholder="your phone number" />
-                    <span style="width: 43px;"></span>
-                    <it-input v-model="signUpForm.nickname" style="flex:1" labelTop="nickname"
-                        placeholder="a nickname which you like" />
-                </div>
-                <div class="divider"></div>
-                <it-input v-model="signUpForm.email" labelTop="Email" prefix-icon="email" type="email"
-                    placeholder="yourmail@gmail.com" />
-                <div class="divider"></div>
-                <!-- <div class="signupmodal-wrap-checkbox">
-                    <it-checkbox v-model="checked" label="I agree to our Terms of Service" />
-                </div> -->
-                <div class="signupmodal-wrap-checkbox"
-                    style="display: flex;align-items: center;justify-content: space-between;">
-                    <it-checkbox v-model="checked" label="I agree to our Terms of Service" />
-                    <it-button text type="primary" block @click="showTerms = true" style="width: auto; float: right;">
-                        Read Terms of Service</it-button>
-                </div>
-                <div class="divider"></div>
-                <it-button block size="big" type="primary" @click="signUpSubmit">Sign up</it-button>
-            </div>
-        </template>
-    </it-modal>
-
-    <!-- 登录 -->
-    <it-modal v-model="signInDialog">
-        <template #body>
-            <div class="signupmodal p-3">
-                <h2><span>Sign in</span><span style="float: right;" @click="signInDialog = false">X</span></h2>
-                <div class="divider"></div>
-                <it-input v-model="signInForm.username" label-top="Username" prefix-icon="account_circle"
-                    placeholder="Unique Username" autocomplete="false" />
-                <div class="divider"></div>
-                <it-input v-model="signInForm.password" label-top="Password" prefix-icon="lock" type="password"
-                    placeholder="Must have at least 6 characters" autocomplete="false" />
-                <div class="divider"></div>
-                <div class="signupmodal-wrap-checkbox"
-                    style="display: flex;align-items: center;justify-content: space-between;">
-                    <it-checkbox v-model="checked" label="I agree to our Terms of Service" />
-                    <it-button text type="primary" block @click="showTerms = true" style="width: auto; float: right;">
-                        Read Terms of Service</it-button>
-                </div>
-                <div class="divider"></div>
-                <it-button block size="big" type="primary" :disabled="!agreedTOS" @click="signInSubmit">Sign in
-                </it-button>
-            </div>
-        </template>
-    </it-modal>
-
-    <it-modal v-model="showTerms">
-        <template #body>
-            <div class="signupmodal p-3">
-                <h2>Terms of Service</h2>
-                <p class="overflow-x-hidden overflow-y-scroll h-64">
-                    Text
-                </p>
-                <div class="signupmodal-wrap-checkbox">
-                    <it-button block size="big" type="primary" @click="; (showTerms = false), (agreedTOS = true)">I
-                        agree
-                    </it-button>
-                </div>
-            </div>
-        </template>
-    </it-modal>
 </template>
     
-<script setup lang='ts'>import { reactive, ref } from 'vue';
-import { Message } from 'equal-vue'
-import { signUp, signIn } from '@/api/business/user.api';
-import router from '@/router/index'
-const signUpDialog = ref(false)
-const checked = ref(false)
-const signInDialog = ref(false)
-const showTerms = ref(false)
-const agreedTOS = ref(true)
+<script setup lang='ts'>
+import router from '@/router/index';
+import { ref } from 'vue';
 
-const signUpForm = reactive({
-    username: '',
-    password: '',
-    phoneNumber: '',
-    nickname: '',
-    email: '',
-})
-const signUpSubmit = () => {
-    console.log('11111');
-    signUp(signUpForm).then(value => {
-        console.log(value);
-        Message.success({
-            text: 'welcome!'
-        })
-    })
-    signUpDialog.value = false
+const NavMenu = ref([
+    {
+        name: '能源管理',
+        path: '/admin',
+    },
+    {
+        name: '我的资产',
+        path: '/wealth',
+    },
+    {
+        name: '交易市场',
+        path: '/market',
+    },
+    {
+        name: '最近行情',
+        path: '/marketInfo',
+    }
+])
+const toModule = (item: { name: string, path: string }) => {
+    router.push(item.path)
 }
-const signInForm = reactive({
-    username: '',
-    password: ''
-})
-const signInSubmit = () => {
-    signIn(signInForm).then(value => {
-        Message.success({
-            text: 'welcome!'
-        })
-    })
-    signInDialog.value = false
-}
+
 </script>
     
-<style lang="less" scoped>
-.divider {
-    height: 20px;
-}
-
-.logo {
-    height: 60px;
-    width: 200px;
-}
-
+<style scoped lang="less">
 .nav {
-    height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 60px;
+    background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
 
-    // border-bottom: 1px solid #67C23A;
-    .menu {
-        color: white;
-    }
+    span {
+        padding-left: 30px;
+        padding-right: 30px;
 
-    div {
-        width: 30%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        &:nth-child(2){
-            width: 40%;
+        h3 {
+            font: italic 2.5em Georgia, serif;
         }
 
-        &:nth-child(2) {
-            width: 40%;
-        }
+        ul {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-left: 20px;
 
-        span {
-            margin-right: 20px;
+            li {
+                margin-right: 20px;
+            }
         }
     }
 }

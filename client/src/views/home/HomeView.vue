@@ -1,6 +1,6 @@
 <template>
     <div class="index">
-        <Navigation />
+        <Navigation_backup />
         <div class="home">
             <!-- <button @click="router.push('/info')">跳转到大屏展示页</button> -->
             <div class="left">
@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import Navigation from '@/components/Navigation.vue'
+import Navigation_backup from '@/components/Navigation_backup.vue'
 import router from '@/router/index'
 </script>
 
