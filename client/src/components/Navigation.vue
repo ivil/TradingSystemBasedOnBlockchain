@@ -33,8 +33,8 @@ const NavMenu = ref([
         path: '/market',
     },
     {
-        name: '最近行情',
-        path: '/marketInfo',
+        name: '链上数据',
+        path: '/blockInfo',
     }
 ])
 const toModule = (item: { name: string, path: string }) => {

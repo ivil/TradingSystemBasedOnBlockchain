@@ -7,9 +7,9 @@ const dealRouter: Array<RouteRecordRaw> = [
         component: () => import("@/views/deal/MarketPlace.vue")
     },
     {
-        path: '/marketInfo',
-        name: 'MarketInfo',
-        component: () => import("@/views/deal/MarketInfo.vue")
+        path: '/blockInfo',
+        name: 'BlockInfo',
+        component: () => import("@/views/deal/BlockInfo.vue")
     },
     {
         path: '/marketBackup',

@@ -30,7 +30,7 @@
                 <div class="product" style="padding-right: 20px;">
                     <span>能源</span>
                     <span>价格（IVIL）</span>
-                    <span>涨幅</span>
+                    <span>24h涨幅</span>
                 </div>
                 <div class="content">
                     <template v-if="tab === 1">
@@ -143,10 +143,12 @@
 import Navigation from '@/components/Navigation.vue'
 import { onMounted, reactive, ref } from 'vue'
 import { sell } from '@/web3/market.api'
+import KCurve from '@/utils/k-curve'
 
 onMounted(() => {
     // created这时候还只是创建了实例，但模板还没挂载完成,因此会挂载失败导致报错
-    import('@/utils/k-curve')
+    // import('@/utils/k-curve')    此方法虽然不需要对K线图进行封装，但是会出现路由跳转之后再跳转回来的时候，K线图无法正常显示的问题
+    KCurve('k-curve');
 })
 
 const Mock = require('mockjs')
@@ -249,11 +251,10 @@ const submit_sell = () => {
 .body {
     display: flex;
     justify-content: space-between;
-    padding-bottom: 10px;
+    background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
 
     .list {
         width: 25%;
-        background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
 
         h3 {
             padding-top: 20px;
@@ -305,11 +306,9 @@ const submit_sell = () => {
 
     .main {
         width: 50%;
-        background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
 
         .graph {
             height: 470px;
-            background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
         }
 
         .option {
@@ -341,7 +340,6 @@ const submit_sell = () => {
     .market {
         width: 25%;
         padding: 20px;
-        background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
 
         h3 {
             padding-bottom: 10px;
