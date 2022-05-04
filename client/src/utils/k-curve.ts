@@ -58,7 +58,6 @@ type EChartsOption = echarts.ComposeOption<
 >;
 
 var chartDom = document.getElementById('k-curve')!;
-console.log(chartDom);
 
 var myChart = echarts.init(chartDom);
 var option: EChartsOption;
@@ -191,7 +190,7 @@ function calculateMA(dayCount: number) {
 
 option = {
     title: {
-        text: '上证指数',
+        text: 'K线',
         left: 0
     },
     tooltip: {

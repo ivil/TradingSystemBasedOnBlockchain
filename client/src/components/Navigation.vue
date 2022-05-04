@@ -67,6 +67,7 @@ const toModule = (item: { name: string, path: string }) => {
 
             li {
                 margin-right: 20px;
+                font-weight: 600;
             }
         }
     }

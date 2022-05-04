@@ -116,10 +116,11 @@ h3{
 
 /* 修改滚动条样式 */
 ::-webkit-scrollbar {
-  height:0px;
-  width: 0px; 
+  height:7px;
+  width: 7px; 
 }
 ::-webkit-scrollbar-thumb {
-  background-color: #eaecf1;
+  /* background-color: #eaecf1; */
+  background-color: #0AB388;
   border-radius: 3px;
 }

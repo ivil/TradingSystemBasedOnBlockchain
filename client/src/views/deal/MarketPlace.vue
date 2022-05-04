@@ -9,27 +9,33 @@
             <div class="tabs">
                 <ul>
                     <template v-if="tab === 1">
-                        <li @click="tab = 1" class="tab">全部</li>
+                        <li @click="tab = 1" class="tab-checked">全部</li>
                     </template>
                     <template v-if="tab !== 1">
-                        <li @click="tab = 1">全部</li>
+                        <li @click="tab = 1" class="tab-unchecked">全部</li>
                     </template>
                     <template v-if="tab === 2">
-                        <li @click="tab = 2" class="tab">传统能源</li>
+                        <li @click="tab = 2" class="tab-checked">传统能源</li>
                     </template>
                     <template v-if="tab !== 2">
-                        <li @click="tab = 2">传统能源</li>
+                        <li @click="tab = 2" class="tab-unchecked">传统能源</li>
                     </template>
                     <template v-if="tab === 3">
-                        <li @click="tab = 3" class="tab">新能源</li>
+                        <li @click="tab = 3" class="tab-checked">新能源</li>
                     </template>
                     <template v-if="tab !== 3">
-                        <li @click="tab = 3">新能源</li>
+                        <li @click="tab = 3" class="tab-unchecked">新能源</li>
                     </template>
                 </ul>
+                <div class="product" style="padding-right: 20px;">
+                    <span>能源</span>
+                    <span>价格（IVIL）</span>
+                    <span>涨幅</span>
+                </div>
                 <div class="content">
                     <template v-if="tab === 1">
-                        <div class="product" v-for="(item, index) in productList" :key="index">
+                        <div class="product" v-for="(item, index) in productList" :key="index"
+                            @click="chooseEnergy(item)">
                             <span> {{ item.symbol }} </span>
                             <span> {{ item.price }} </span>
                             <template v-if="/\+/.test(item.rise)">
@@ -61,52 +67,67 @@
                 <div class="deal">
                     <div class="input">
                         <div class="title">价格（IVIL）</div>
-                        <it-input status="success" />
+                        <it-input v-model="buyForm.price" status="success" @keyup="calculateBuyMoney" />
                     </div>
                     <div class="input">
-                        <div class="title">数量（XXL）</div>
-                        <it-input status="success" />
+                        <div class="title">数量（{{ buyForm.symbol }}）</div>
+                        <it-input v-model="buyForm.count" status="success" @keyup="calculateBuyMoney" />
                     </div>
                     <div class="input">
                         <div class="title">金额（IVIL）</div>
-                        <it-input status="success" />
+                        <it-input v-model="buyForm.money" status="success" @keyup="calculateBuyCount" />
                     </div>
-                    <it-button class="button" type="success" outlined>购买</it-button>
+                    <it-button class="button" type="success" outlined @click="submit_buy">购买</it-button>
                 </div>
                 <div class="deal">
                     <div class="input">
                         <div class="title">价格（IVIL）</div>
-                        <it-input status="danger" />
+                        <it-input v-model="sellForm.price" status="danger" @keyup="calculateSellMoney" />
                     </div>
                     <div class="input">
-                        <div class="title">数量（XXL）</div>
-                        <it-input status="danger" />
+                        <div class="title">数量（{{ sellForm.symbol }}）</div>
+                        <it-input v-model="sellForm.count" status="danger" @keyup="calculateSellMoney" />
                     </div>
                     <div class="input">
                         <div class="title">金额（IVIL）</div>
-                        <it-input status="danger" />
+                        <it-input v-model="sellForm.money" status="danger" @keyup="calculateSellCount" />
                     </div>
-                    <it-button class="button" type="danger" outlined>卖出</it-button>
+                    <it-button class="button" type="danger" outlined @click="submit_sell">卖出</it-button>
                 </div>
             </div>
         </div>
         <div class="market">
+            <h3>交易</h3>
             <ul>
-                <li @click="entrustTap = 1">全部委托</li>
-                <li @click="entrustTap = 2">交易记录</li>
+                <template v-if="entrustTap === 1">
+                    <li @click="entrustTap = 1" class="tab-checked">全部委托</li>
+                </template>
+                <template v-if="entrustTap !== 1">
+                    <li @click="entrustTap = 1" class="tab-unchecked">全部委托</li>
+                </template>
+                <template v-if="entrustTap === 2">
+                    <li @click="entrustTap = 2" class="tab-checked">交易记录</li>
+                </template>
+                <template v-if="entrustTap !== 2">
+                    <li @click="entrustTap = 2" class="tab-unchecked">交易记录</li>
+                </template>
             </ul>
+            <template v-if="entrustTap === 1">
+                <div class="transaction" style="padding-right: 20px;">
+                    <span>价格(IVIL)</span>
+                    <span>数量</span>
+                    <span>合计(IVIL)</span>
+                </div>
+            </template>
             <div class="content">
                 <template v-if="entrustTap === 1">
-                    <div class="transaction">
-                        <span>价格</span>
-                        <span>数量</span>
-                        <span>合计</span>
-                    </div>
+
                     <template v-for="(item, index) in deals" :key="index">
                         <div class="transaction">
                             <span> {{ item.price }} </span>
                             <span> {{ item.count }} </span>
-                            <span> {{ item.money }} </span>
+                            <!-- <span> {{ item.money }} </span> -->
+                            <span> {{ Number(item.price) * Number(item.count) }} </span>
                         </div>
                     </template>
                 </template>
@@ -120,7 +141,8 @@
     
 <script setup lang='ts'>
 import Navigation from '@/components/Navigation.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
+import { sell } from '@/web3/market.api'
 
 onMounted(() => {
     // created这时候还只是创建了实例，但模板还没挂载完成,因此会挂载失败导致报错
@@ -129,7 +151,7 @@ onMounted(() => {
 
 const Mock = require('mockjs')
 const tab = ref(1)
-const entrustTap = ref(1)
+const entrustTap = ref(1)   //委托
 
 // 能源列表
 const productList = ref([
@@ -142,10 +164,10 @@ const productList = ref([
 
 // 数据模拟
 productList.value = Mock.mock({
-    "list|17-19": [
+    "list|27-39": [
         {
             symbol: /[A-Z]{2,4}/,
-            price: /\$[1-9]{1,5}/,
+            price: /[1-9]{1,5}/,
             rise: /(\+|\-)\d{1}\.\d{2}%/
         }
     ]
@@ -161,31 +183,82 @@ const deals = ref([
     }
 ])
 deals.value = Mock.mock({
-    "list|17-19": [
+    "list|27-39": [
         {
-            price: /\$[1-9]{1,5}/,
+            price: /[1-9]{1,5}/,
             count: /[1-9]{1,7}/,
             money: /[1-9]{5,9}/
         }
     ]
 }).list
+
+const sellForm = reactive({
+    symbol: productList.value[0].symbol,
+    price: productList.value[0].price,
+    count: 0,
+    money: 0
+})
+const buyForm = reactive({
+    symbol: productList.value[0].symbol,
+    price: productList.value[0].price,
+    count: 0,
+    money: 0
+})
+
+// 选择要交易的能源
+const chooseEnergy = (item: { symbol: string, price: string, rise: string }) => {
+    sellForm.symbol = item.symbol
+    sellForm.price = item.price
+    sellForm.count = 0
+    sellForm.money = 0
+    buyForm.symbol = item.symbol
+    buyForm.price = item.price
+    buyForm.count = 0
+    buyForm.money = 0
+}
+
+// 计算买入金额
+const calculateBuyMoney = () => {
+    buyForm.money = Number(buyForm.price) * Number(buyForm.count)
+}
+// 计算买入数量
+const calculateBuyCount = () => {
+    buyForm.count = Number(String(Number(buyForm.money) / Number(buyForm.price)).split(".")[0])
+}
+// 计算卖出金额
+const calculateSellMoney = () => {
+    sellForm.money = Number(sellForm.price) * Number(sellForm.count)
+}
+// 计算卖出数量
+const calculateSellCount = () => {
+    sellForm.count = Number(String(Number(sellForm.money) / Number(sellForm.price)).split(".")[0])
+}
+
+// 表单提交
+const submit_buy = () => {
+
+}
+const submit_sell = () => {
+    sell(sellForm.symbol, sellForm.count, sellForm.money).then(value => {
+        console.log(value);
+    })
+}
 </script>
     
 <style scoped lang="less">
 .body {
     display: flex;
     justify-content: space-between;
-    padding-left: 10px;
-    padding-right: 10px;
     padding-bottom: 10px;
 
     .list {
         width: 25%;
-        background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
+        background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
 
         h3 {
             padding-top: 20px;
             padding-bottom: 10px;
+            padding-left: 10px;
         }
 
         .search {
@@ -199,33 +272,43 @@ deals.value = Mock.mock({
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding-bottom: 20px;
+                padding-right: 15px;
+                padding-bottom: 5px;
 
-                .tab {
+                .tab-checked {
                     color: orchid;
                     font-weight: 600;
+                    padding-bottom: 10px;
+                    border-bottom: 5px solid orchid;
+                }
+
+                .tab-unchecked {
+                    font-weight: 600;
+                    color: grey;
+                    padding-bottom: 10px;
                 }
             }
 
-            .content {
-                height: 500px;
-                overflow-y: auto;
+            .product {
+                display: flex;
+                justify-content: space-between;
+                padding: 15px 0;
+            }
 
-                .product {
-                    display: flex;
-                    justify-content: space-between;
-                    padding: 15px 0;
-                }
+            .content {
+                height: 600px;
+                padding-right: 15px;
+                overflow-y: auto;
             }
         }
     }
 
     .main {
         width: 50%;
-        background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
+        background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
 
         .graph {
-            height: 350px;
+            height: 470px;
             background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
         }
 
@@ -258,7 +341,11 @@ deals.value = Mock.mock({
     .market {
         width: 25%;
         padding: 20px;
-        background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
+        background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
+
+        h3 {
+            padding-bottom: 10px;
+        }
 
         ul {
             display: flex;
@@ -266,22 +353,36 @@ deals.value = Mock.mock({
             justify-content: space-around;
             padding-bottom: 20px;
 
+            .tab-checked {
+                color: #198CFF;
+                font-weight: 600;
+                padding-bottom: 10px;
+                border-bottom: 5px solid #198CFF;
+            }
+
+            .tab-unchecked {
+                font-weight: 600;
+                color: grey;
+                padding-bottom: 10px;
+            }
+        }
+
+        .transaction {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+
+            span {
+                min-width: 20%;
+            }
         }
 
         .content {
-            height: 550px;
+            height: 600px;
+            padding-right: 15px;
             overflow-y: auto;
 
-            .transaction {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 10px 0;
-
-                span {
-                    min-width: 20%;
-                }
-            }
         }
     }
 }
