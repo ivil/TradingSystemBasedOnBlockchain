@@ -29,7 +29,7 @@
 </template>
     
 <script setup lang='ts'>
-import { transactionsOfPool, buy } from '@/web3/market.api'
+import { transactionsOfPool, confirm_sell } from '@/web3/api/market.api'
 import { ref } from 'vue';
 
 const deals = ref([
@@ -59,7 +59,7 @@ getDeals()
 const buyProduct = (index: any) => {
     console.log(index);
 
-    buy(Number(index)).then(value => {
+    confirm_sell(Number(index)).then(value => {
         console.log(value);
 
     })

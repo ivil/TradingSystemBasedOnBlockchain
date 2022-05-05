@@ -1,7 +1,7 @@
 // 为了使用私钥对交易进行签名，必须使用缓冲区将它们转换成二进制数据字符串，缓冲区是NodeJS中的全局模块。
 // 构建交易对象，签署交易，广播交易
 // 关于data参数，可以使用web3.js函数encodeABI()，把contract对象中的智能合约函数转换为十六进制表示。
-import Contract from '@/web3/contract.abi'
+import Contract from '@/web3/config/contract.abi'
 const Tx = require('ethereumjs-tx').Transaction
 const Web3 = require('web3')
 
@@ -24,7 +24,7 @@ export const test = () => {
             nonce: web3.utils.toHex(txCount),   //为nonce变量赋值，可以使用web3.eth.getTransactionCount()函数获取交易nonce
             gasLimit: web3.utils.toHex(8000000),
             gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
-            to: Contract.TradingSystem.address,
+            to: Contract.TradingSystem.address, //部署智能合约没有目标账户。
             // value: web3.utils.toHex(web3.utils.toWei('0.1', 'ether')),
             data: contract.methods.sell("IVIL", 1, 100).encodeABI() //data – 被调用的智能合约函数的十六进制表示。
         }

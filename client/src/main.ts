@@ -7,8 +7,8 @@ import 'equal-vue/dist/style.css'
 
 const app = createApp(App)
 const elements = [
-    store,
     router,
+    store,//store应该放router后面
     Equal
 ]
 elements.forEach(el => {

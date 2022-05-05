@@ -1,4 +1,4 @@
-import { contractInstance } from '@/web3/common.api'
+import { contractInstance } from '@/web3/api/common.api'
 
 /**
  * 

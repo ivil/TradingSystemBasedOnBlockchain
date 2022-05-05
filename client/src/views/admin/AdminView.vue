@@ -23,6 +23,9 @@
                     <it-input v-model="form1.value2" status="success" placeholder="value" />
                 </li>
             </ul>
+            <ul>
+                <it-button @click="migrate">test</it-button>
+            </ul>
         </div>
         <div class="box">
             <h3>能源创建</h3>
@@ -104,7 +107,8 @@
     
 <script setup lang='ts'>
 import { reactive, ref } from 'vue';
-import { createIVIL, destoryIVIL, createToken, destoryToken, increaseToken, decreaseToken } from '@/web3/admin.api'
+import { createIVIL, destoryIVIL, createToken, destoryToken, increaseToken, decreaseToken } from '@/web3/api/admin.api'
+import migrate from '@/web3/config/Migrate'
 
 const form1 = reactive({
     value1: 0,

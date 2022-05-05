@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import Contract from '@/web3/contract.abi'
+import Contract from '@/web3/config/contract.abi'
 
 const nodeHost = "http://127.0.0.1:7777"
 const abi = Contract.TradingSystem.abi

@@ -124,8 +124,8 @@
 </template>
     
 <script setup lang='ts'>
-import { sell, cancelSell, getPersonalPool } from '@/web3/market.api'
-import { symbol, balanceOf, totalSupply, transfer, transferToken, getAllTokensInfo, getTokenBalance } from '@/web3/user.api'
+import { post_sell, cancelSell, getPersonalPool } from '@/web3/api/market.api'
+import { symbol, balanceOf, totalSupply, transfer, transferToken, getAllTokensInfo, getTokenBalance } from '@/web3/api/user.api'
 import { reactive, ref } from 'vue';
 
 const index = ref('')
@@ -142,7 +142,7 @@ const product = reactive({
     price: 0
 })
 const postProduct = () => {
-    sell(product.symbol, product.value, product.price).then(value => {
+    post_sell(product.symbol, product.value, product.price).then(value => {
         console.log(value);
 
     })

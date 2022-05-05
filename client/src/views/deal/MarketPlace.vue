@@ -125,7 +125,7 @@
                     <span>能源</span>
                     <span>数量</span>
                     <span>价格(IVIL)</span>
-                    <span>&nbsp;&nbsp;&nbsp;&nbsp;状态</span>
+                    <span>状态</span>
                 </div>
             </template>
             <div class="content">
@@ -165,9 +165,9 @@
 <script setup lang='ts'>
 import Navigation from '@/components/Navigation.vue'
 import { onMounted, reactive, ref } from 'vue'
-import { post_sell, confirm_sell, getDeals, getDealReocrds } from '@/web3/market.api'
+import { post_sell, confirm_sell, getDeals, getDealReocrds } from '@/web3/api/market.api'
 import KCurve from '@/utils/k-curve'
-import { listenAccountsChanged } from '@/web3/common.api';
+import { listenAccountsChanged } from '@/web3/api/common.api';
 
 onMounted(() => {
     // created这时候还只是创建了实例，但模板还没挂载完成,因此会挂载失败导致报错

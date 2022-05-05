@@ -120,8 +120,8 @@ import Navigation from '@/components/Navigation.vue'
 import pieChart from '@/utils/pie-chart'
 import { onMounted, onUnmounted, reactive, ref } from 'vue';
 import { introduction } from '@/utils/introduction'
-import { symbol, balanceOf, transfer, transferToken, getEnergyBalance } from '@/web3/user.api'
-import { getAccount, listenAccountsChanged } from '@/web3/common.api'
+import { symbol, balanceOf, transfer, transferToken, getEnergyBalance } from '@/web3/api/user.api'
+import { getAccount, listenAccountsChanged } from '@/web3/api/common.api'
 import { stringify } from 'querystring';
 // 存在自由变量的函数就是闭包
 //闭包作用: 一个是前面提到的可以读取函数内部的变量，另一个就是让这些变量的值始终保持在内存中，不会在 f1 调用后被自动清除。

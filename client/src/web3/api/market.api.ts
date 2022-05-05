@@ -1,4 +1,4 @@
-import { contractInstance } from '@/web3/common.api'
+import { contractInstance } from '@/web3/api/common.api'
 
 /**
  * @dev 获取交易池中的未被响应交易
