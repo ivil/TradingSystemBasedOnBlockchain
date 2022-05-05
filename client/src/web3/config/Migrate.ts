@@ -1,15 +1,14 @@
 import Contract from '@/web3/config/contract.abi'
+import adminAccount from '@/web3/config/adminAccount'
+import store from '@/store'
 const Web3 = require('web3')
 const Tx = require('ethereumjs-tx').Transaction
 
-import { useStore } from 'vuex'
-const store = useStore()
 
-const abi = Contract.TradingSystem.abi
 const ByteCode = Contract.TradingSystem.bytecode
 
-const account = '0xE772629e7Ec902CE1a88B184fBE083818475661c'
-const privateKey = '50872512011fe4cbe14cf4ba9b816eeadb0ad2dbb8afc2bf3624244a4eedd813'
+const account = adminAccount.account
+const privateKey = adminAccount.privateKey
 const pkBuffer = Buffer.from(privateKey, 'hex') //使用换冲区将私钥转化成二进制数据字符串，缓冲区是NodeJs的全局模块
 const migrate = () => {
     const web3 = new Web3(window.ethereum)
@@ -41,5 +40,4 @@ const migrate = () => {
     })
 
 }
-
 export default migrate

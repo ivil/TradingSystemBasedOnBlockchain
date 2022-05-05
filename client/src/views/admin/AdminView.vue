@@ -24,7 +24,10 @@
                 </li>
             </ul>
             <ul>
-                <it-button @click="migrate">test</it-button>
+                <it-button @click="migrate">部署合约</it-button>
+            </ul>
+            <ul>
+                <it-button @click="autoCreateEnergies">创造能源</it-button>
             </ul>
         </div>
         <div class="box">
@@ -109,6 +112,7 @@
 import { reactive, ref } from 'vue';
 import { createIVIL, destoryIVIL, createToken, destoryToken, increaseToken, decreaseToken } from '@/web3/api/admin.api'
 import migrate from '@/web3/config/Migrate'
+import { autoCreateEnergies } from '@/web3/test/autoCreateEnergy';
 
 const form1 = reactive({
     value1: 0,

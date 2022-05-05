@@ -168,6 +168,7 @@ import { onMounted, reactive, ref } from 'vue'
 import { post_sell, confirm_sell, getDeals, getDealReocrds } from '@/web3/api/market.api'
 import KCurve from '@/utils/k-curve'
 import { listenAccountsChanged } from '@/web3/api/common.api';
+import { getAllTokensInfo } from '@/web3/api/user.api';
 
 onMounted(() => {
     // created这时候还只是创建了实例，但模板还没挂载完成,因此会挂载失败导致报错
@@ -187,18 +188,36 @@ const productList = ref([
         rise: ''
     }
 ])
+getAllTokensInfo().then(value => {
+    productList.value = []
+    value.forEach((el: { symbol: string, [key: string]: string }) => {
+        const product = {
+            symbol: el.symbol,
+            price: Mock.mock(/[1-9]\d{0,4}/),
+            rise: Mock.mock(/(\+|\-)\d{1}\.\d{2}%/)
+        }
+        productList.value.push(product)
+    })
+}).then(() => {
+    // 由于获取区块链上的能源列表较慢，可能会出现初始化失败的情况，所以采用异步方式来初始化表单
+    sellForm.symbol = productList.value[0].symbol
+    buyForm.symbol = productList.value[0].symbol
+    sellForm.price = productList.value[0].price
+    sellForm.price = productList.value[0].price
+})
+
 
 // 数据模拟
-productList.value = Mock.mock({
-    "list|27-39": [
-        {
-            // symbol: /[A-Z]{2,4}/,
-            symbol: 'IVIL',
-            price: /[1-9]{1,5}/,
-            rise: /(\+|\-)\d{1}\.\d{2}%/
-        }
-    ]
-}).list
+// productList.value = Mock.mock({
+//     "list|27-39": [
+//         {
+//             // symbol: /[A-Z]{2,4}/,
+//             symbol: 'IVIL',
+//             price: /[1-9]{1,5}/,
+//             rise: /(\+|\-)\d{1}\.\d{2}%/
+//         }
+//     ]
+// }).list
 
 
 // 交易市场列表
@@ -223,14 +242,14 @@ const deals = ref([
 // }).list
 
 const sellForm = reactive({
-    symbol: productList.value[0].symbol,
-    price: productList.value[0].price,
+    symbol: '',
+    price: '',
     count: 0,
     money: 0
 })
 const buyForm = reactive({
-    symbol: productList.value[0].symbol,
-    price: productList.value[0].price,
+    symbol: '',
+    price: '',
     count: 0,
     money: 0
 })

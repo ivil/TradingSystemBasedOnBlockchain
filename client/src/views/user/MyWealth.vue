@@ -79,7 +79,7 @@
                         <template v-for="(item, index) in energyList" :key="index">
                             <div class="energy">
                                 <span style="display: flex;align-items: center;justify-content: center;">
-                                    <img src="@/assets/logo/logo.png" alt="avator">
+                                    <img src="@/assets/images/block.png" alt="avator">
                                     <span> {{ item.symbol }} </span>
                                 </span>
                                 <span> {{ item.count }} </span>

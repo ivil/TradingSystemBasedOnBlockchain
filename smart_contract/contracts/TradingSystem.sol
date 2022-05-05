@@ -244,7 +244,7 @@ contract IvilWorld is ERC20 {
      *constant 修饰的变量需要在编译期确定值, 链上不会为这个变量分配存储空间, 它会在编译时用具体的值替代, 因此, constant常量是不支持使用运行时状态赋值的(例如: block.number , now , msg.sender 等 )
      *constant 目前仅支持修饰 strings 及 值类型.
      */
-    Token private godToken = Token("ivil.world", "IVIL", 9, 21000000); // 创世token,生态积分
+    Token private godToken = Token("ivil.world", "ENERGY", 9, 21000000); // 创世token,生态积分
 
     constructor() {
         root = msg.sender;
