@@ -49,16 +49,6 @@ export const transfer = async (to: string, value: number) => {
     return await contract.methods.transfer(to, value).send({ from: account })
 }
 
-// /**
-//  * @dev 获取指定通证信息
-//  * @param symbol 通证符号
-//  * @returns 
-//  */
-// export const getTokenInfo = async (symbol: string) => {
-//     const [contract] = await contractInstance()
-//     return await contract.methods.getTokenInfo(symbol).call()
-// }
-
 /**
  * @dev 获取全部通证信息
  * @returns 
@@ -69,12 +59,33 @@ export const getAllTokensInfo = async () => {
 }
 
 /**
- * @dev 获取指定地址单个通证余额
+ * @dev 获取指定地址单个通证余额，此处是查询当前账户地址单个特定通证余额
  * @returns 
  */
 export const getTokenBalance = async (symbol: string) => {
     const [contract, account] = await contractInstance()
-    return await contract.methods.getTokenBalance(symbol,account).call()
+    return await contract.methods.getTokenBalance(symbol, account).call()
+}
+
+/**
+ * 
+ * @param ref ref响应式变量
+ */
+export const getEnergyBalance = (ref: any) => {
+    ref.value = []
+    getAllTokensInfo().then((value) => {
+        value.forEach((el: { symbol: string, [key: string]: string }) => {
+            let energy = {
+                avator: '',
+                symbol: el.symbol,
+                count: ''
+            }
+            getTokenBalance(el.symbol).then(value => {
+                energy.count = value
+                ref.value.push(energy)
+            })
+        })
+    })
 }
 
 /**
@@ -119,9 +130,4 @@ export const cancelSell = async (index: number) => {
 export const buy = async (index: number) => {
     const [contract, account] = await contractInstance()
     return await contract.methods.buy(index).send({ from: account })
-}
-
-export const getPersonalPool = async () => {
-    const [contract] = await contractInstance()
-    return await contract.methods.getPersonalPool().call();
 }

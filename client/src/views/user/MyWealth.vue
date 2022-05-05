@@ -4,8 +4,8 @@
         <div class="left">
             <div class="account">
                 <div class="balance">
-                    <span>可用余额: </span>
-                    <span>2100000 IVIL</span>
+                    <span>可用余额:&nbsp;</span>
+                    <span> {{ getBalance() }} </span>
                 </div>
                 <div class="deal">
                     <div class="tabs">
@@ -32,15 +32,16 @@
                         <div class="tabArea2">
                             <div class="input">
                                 <div class="description">转账金额</div>
-                                <it-input status="success" placeholder="value"></it-input>
+                                <it-input v-model="transferData.value" status="success" placeholder="value"></it-input>
                             </div>
                             <div class="input">
                                 <div class="description">对方地址</div>
-                                <it-input status="success" placeholder="address"></it-input>
+                                <it-input v-model="transferData.address" status="success" placeholder="address">
+                                </it-input>
                             </div>
                             <div class="input">
                                 <div class="description"></div>
-                                <it-button block type="success">发起交易</it-button>
+                                <it-button block type="success" @click="transferIVIL">发起交易</it-button>
                             </div>
                             <br>
                         </div>
@@ -94,19 +95,19 @@
                     <br>
                     <div class="input">
                         <div class="description">能源符号</div>
-                        <it-input status="success" placeholder="symbol"></it-input>
+                        <it-input status="success" placeholder="symbol" v-model="energyForm.symbol"></it-input>
                     </div>
                     <div class="input">
                         <div class="description">能源数量</div>
-                        <it-input status="success" placeholder="value"></it-input>
+                        <it-input status="success" placeholder="value" v-model="energyForm.count"></it-input>
                     </div>
                     <div class="input">
                         <div class="description">对方地址</div>
-                        <it-input status="success" placeholder="address"></it-input>
+                        <it-input status="success" placeholder="address" v-model="energyForm.address"></it-input>
                     </div>
                     <div class="input">
                         <div class="description"></div>
-                        <it-button block type="success">发起交易</it-button>
+                        <it-button block type="success" @click="transferEnergy">发起交易</it-button>
                     </div>
                 </div>
             </template>
@@ -117,8 +118,13 @@
 <script setup lang='ts'>
 import Navigation from '@/components/Navigation.vue'
 import pieChart from '@/utils/pie-chart'
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, reactive, ref } from 'vue';
 import { introduction } from '@/utils/introduction'
+import { symbol, balanceOf, transfer, transferToken, getEnergyBalance } from '@/web3/user.api'
+import { getAccount, listenAccountsChanged } from '@/web3/common.api'
+import { stringify } from 'querystring';
+// 存在自由变量的函数就是闭包
+//闭包作用: 一个是前面提到的可以读取函数内部的变量，另一个就是让这些变量的值始终保持在内存中，不会在 f1 调用后被自动清除。
 const Mock = require('mockjs')
 
 const tab = ref(1)
@@ -143,8 +149,47 @@ onMounted(() => {
     pieChart('pieChart', pieChartData)
 })
 
-const accountAddress = ref('0xE98A84FeD226af1aF8c486292035DC47CCDA5AB6')
+// 获取当前账户地址并监听地址变化
+const accountAddress = ref('')
+getAccount().then(value => {
+    accountAddress.value = value
+})
+// 获取积分余额
+const balance = reactive({
+    count: '',
+    symbol: ''
+})
+const getBalance = () => {
+    symbol().then(value => {
+        balance.symbol = value
+    })
+    balanceOf().then(value => {
+        balance.count = value
+    })
+    return balance.count + ' ' + balance.symbol
+}
+// 监听账户变化
+listenAccountsChanged(() => {
+    getAccount().then(value => {
+        accountAddress.value = value
+    })
+    getBalance()
+    getEnergyBalance(energyList)
+})
 
+// 转账
+const transferData = reactive({
+    value: '',
+    address: ''
+})
+const transferIVIL = () => {
+    transfer(transferData.address, Number(transferData.value)).then(value => {
+        console.log(value);
+        getBalance()
+    })
+}
+
+// 获取能源列表
 const energyList = ref([
     {
         avator: '',
@@ -152,16 +197,30 @@ const energyList = ref([
         count: ''
     }
 ])
-energyList.value = Mock.mock({
-    "list|17-19": [
-        {
-            avator: '',
-            symbol: /[A-Z]{2,4}/,
-            count: /[1-9]{1}\d{0,11}/
-        }
-    ]
-}).list
+getEnergyBalance(energyList)
+// 数据模拟
+// energyList.value = Mock.mock({
+//     "list|17-19": [
+//         {
+//             avator: '',
+//             symbol: /[A-Z]{2,4}/,
+//             count: /[1-9]{1}\d{0,11}/
+//         }
+//     ]
+// }).list
 
+// 转移能源
+const energyForm = reactive({
+    symbol: '',
+    count: '',
+    address: ''
+})
+const transferEnergy = () => {
+    transferToken(energyForm.symbol, energyForm.address, Number(energyForm.count)).then(value => {
+        console.log(value);
+        getEnergyBalance(energyList)
+    })
+}
 </script>
     
 <style scoped lang="less">

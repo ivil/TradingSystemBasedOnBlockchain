@@ -7,6 +7,11 @@ import adminRouter from '@/router/adminRouter'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
+    name: "HomePage",
+    component: () => import("@/views/home/HomePage.vue")
+  },
+  {
+    path: '/home',
     name: "HomeView",
     component: () => import("@/views/home/HomeView.vue")
   },

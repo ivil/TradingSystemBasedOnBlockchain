@@ -362,7 +362,6 @@ contract IvilWorld is ERC20 {
         return balance[who][symbol];
     }
 
-
     // 转账
     function transferToken(
         string memory symbol,

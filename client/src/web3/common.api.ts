@@ -11,14 +11,36 @@ const address = Contract.TradingSystem.address
  */
 export const createWeb3 = async () => {
     const web3 = await window.ethereum.enable().then(() => {
-        const web3 = new Web3(window.web3.currentProvider || nodeHost)
-        // console.log("web3实例已创建！");
+        const web3 = new Web3(window.ethereum || window.web3.currentProvider || nodeHost)
         return web3
     }, () => {
-        console.log('创建web3实例出错了！');
+        console.warn('用户拒绝了授权');
         return null
     })
     return web3
+}
+
+/**
+ * @dev 获取当前账户
+ * @returns 当前账户
+ */
+export const getAccount = async () => {
+    const web3 = await createWeb3()
+    const [account] = await web3.eth.getAccounts()
+    return account
+}
+
+/**
+ * @dev 监听账户变动
+ * @param func 回调函数
+ * @returns 当前账户地址
+ */
+export const listenAccountsChanged = (func: () => void) => {
+    return window.ethereum.on('accountsChanged', (accounts: any) => {
+        const [account] = accounts
+        func();
+        return account
+    })
 }
 
 /**

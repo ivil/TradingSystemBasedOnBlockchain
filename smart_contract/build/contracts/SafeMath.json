@@ -21501,7 +21501,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-05-03T13:34:51.660Z",
+  "updatedAt": "2022-05-05T02:11:55.104Z",
   "devdoc": {
     "details": "具有可在错误时恢复的安全检查的数学运算",
     "kind": "dev",

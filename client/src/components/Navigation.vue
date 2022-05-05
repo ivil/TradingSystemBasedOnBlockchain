@@ -1,7 +1,7 @@
 <template>
     <div class="nav">
         <span>
-            <h3>ivil.world</h3>
+            <h3 @click="router.push('/')">ivil.world</h3>
         </span>
         <span>
             <ul>

@@ -114,25 +114,48 @@
             </ul>
             <template v-if="entrustTap === 1">
                 <div class="transaction" style="padding-right: 20px;">
-                    <span>价格(IVIL)</span>
+                    <span>能源</span>
                     <span>数量</span>
-                    <span>合计(IVIL)</span>
+                    <span>价格(IVIL)</span>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;交易</span>
+                </div>
+            </template>
+            <template v-if="entrustTap === 2">
+                <div class="transaction" style="padding-right: 20px;">
+                    <span>能源</span>
+                    <span>数量</span>
+                    <span>价格(IVIL)</span>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;状态</span>
                 </div>
             </template>
             <div class="content">
                 <template v-if="entrustTap === 1">
-
                     <template v-for="(item, index) in deals" :key="index">
                         <div class="transaction">
-                            <span> {{ item.price }} </span>
+                            <span> {{ item.symbol }} </span>
                             <span> {{ item.count }} </span>
-                            <!-- <span> {{ item.money }} </span> -->
-                            <span> {{ Number(item.price) * Number(item.count) }} </span>
+                            <span> {{ item.price }} </span>
+                            <span>
+                                <it-button type="primary" outlined style="background: transparent;"
+                                    @click="res_sell(Number(item.index))">购买</it-button>
+                            </span>
                         </div>
                     </template>
                 </template>
                 <template v-if="entrustTap === 2">
-                    2
+                    <template v-for="(item, index) in records" :key="index">
+                        <div class="transaction">
+                            <span> {{ item.symbol }} </span>
+                            <span> {{ item.count }} </span>
+                            <span> {{ item.price }} </span>
+                            <template v-if="!item.status">
+                                <span style="color: red;font-weight: 550;font-size: 14px;">未成交</span>
+                            </template>
+                            <template v-if="item.status">
+                                <span style="color: green;font-weight: 550;font-size: 14px;">已成交</span>
+                            </template>
+                        </div>
+                    </template>
                 </template>
             </div>
         </div>
@@ -142,8 +165,9 @@
 <script setup lang='ts'>
 import Navigation from '@/components/Navigation.vue'
 import { onMounted, reactive, ref } from 'vue'
-import { sell } from '@/web3/market.api'
+import { post_sell, confirm_sell, getDeals, getDealReocrds } from '@/web3/market.api'
 import KCurve from '@/utils/k-curve'
+import { listenAccountsChanged } from '@/web3/common.api';
 
 onMounted(() => {
     // created这时候还只是创建了实例，但模板还没挂载完成,因此会挂载失败导致报错
@@ -168,7 +192,8 @@ const productList = ref([
 productList.value = Mock.mock({
     "list|27-39": [
         {
-            symbol: /[A-Z]{2,4}/,
+            // symbol: /[A-Z]{2,4}/,
+            symbol: 'IVIL',
             price: /[1-9]{1,5}/,
             rise: /(\+|\-)\d{1}\.\d{2}%/
         }
@@ -176,23 +201,26 @@ productList.value = Mock.mock({
 }).list
 
 
-// 交易市场
+// 交易市场列表
 const deals = ref([
     {
-        price: '',
+        symbol: '',
         count: '',
-        money: ''
+        price: '',
+        index: ''
     }
 ])
-deals.value = Mock.mock({
-    "list|27-39": [
-        {
-            price: /[1-9]{1,5}/,
-            count: /[1-9]{1,7}/,
-            money: /[1-9]{5,9}/
-        }
-    ]
-}).list
+
+// 模拟交易市场数据
+// deals.value = Mock.mock({
+//     "list|27-39": [
+//         {
+//             price: /[1-9]{1,5}/,
+//             count: /[1-9]{1,7}/,
+//             money: /[1-9]{5,9}/
+//         }
+//     ]
+// }).list
 
 const sellForm = reactive({
     symbol: productList.value[0].symbol,
@@ -236,15 +264,49 @@ const calculateSellCount = () => {
     sellForm.count = Number(String(Number(sellForm.money) / Number(sellForm.price)).split(".")[0])
 }
 
-// 表单提交
+// 表单提交,发布需求
 const submit_buy = () => {
 
 }
 const submit_sell = () => {
-    sell(sellForm.symbol, sellForm.count, sellForm.money).then(value => {
+    post_sell(sellForm.symbol, sellForm.count, sellForm.money).then(value => {
         console.log(value);
+        refresh()
     })
 }
+
+// 响应需求
+const res_buy = () => {
+
+}
+const res_sell = (index: number) => {
+    confirm_sell(index).then(value => {
+        console.log(value);
+        refresh()
+    })
+}
+
+// 获取个人交易记录
+const records = ref([
+    {
+        symbol: '',
+        count: '',
+        price: '',
+        status: false,
+        index: ''
+    }
+])
+
+// 刷新
+const refresh = () => {
+    getDeals(deals)
+    getDealReocrds(records)
+}
+refresh()
+listenAccountsChanged(() => {
+    refresh()
+})
+
 </script>
     
 <style scoped lang="less">
