@@ -11,6 +11,7 @@
     "core-js": "^3.8.3",
     "echarts": "^5.3.2",
     "equal-vue": "^0.79.3",
+    "ethereumjs-tx": "^2.1.2",
     "mockjs": "^1.1.0",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
