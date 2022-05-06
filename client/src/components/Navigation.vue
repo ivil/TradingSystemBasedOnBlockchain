@@ -11,6 +11,7 @@
             </ul>
         </span>
         <span>
+            <h3>基于区块链的能源交易系统</h3>
         </span>
     </div>
 </template>
@@ -57,6 +58,7 @@ const toModule = (item: { name: string, path: string }) => {
 
         h3 {
             font: italic 2.5em Georgia, serif;
+            letter-spacing: 3px;
         }
 
         ul {

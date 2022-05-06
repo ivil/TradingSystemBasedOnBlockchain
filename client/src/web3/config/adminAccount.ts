@@ -1,6 +1,6 @@
 const adminAccount = {
-    account: '0x8B6402a6579415781518f7534fc0825fb788EbbC',
-    privateKey: '7931f44c0d507b3951a4762ea89f53c4dbec54f85c64009d3730da7461af3c5d'
+    account: '0xF2389f95fb3F47A2AC01a38854641eaCBC3E648e',
+    privateKey: 'f6127fb6be00b96a7b8be5629de8da93c3a6950fa2034a046ae42cd17b1a8852'
 }
 
 

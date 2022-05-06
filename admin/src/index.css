@@ -11,3 +11,28 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  list-style: none;
+}
+
+/* 修改滚动条样式 */
+::-webkit-scrollbar{
+  height: 7px;
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb{
+  background-color: #0AB388;
+  border-radius: 3px;
+}
+
+a{
+  text-decoration: none;
+  color: black;
+}
