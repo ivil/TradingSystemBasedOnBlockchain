@@ -1,10 +1,35 @@
 import { Component, ReactNode } from "react";
 import "./contract.css";
 import Navigation from "../../components/Navigation";
-
 import { Button, Input } from "antd";
 
+const Mock = require("mockjs");
+
 export default class Contract extends Component {
+  TestCases = () => {
+    let temp: JSX.Element[] = [];
+    const data = Mock.mock({
+      "list|30-50": [
+        {
+          symbol: /[A-Z]{2,4}/,
+          count: /[1-9]{1}\d{0,9}/,
+          price: /[1-9]{1}\d{0,13}/,
+          type: /(出售)|(购买)/,
+        },
+      ],
+    }).list;
+    data.forEach((el: any) => {
+      temp.push(
+        <ul>
+          <li> {el.symbol} </li>
+          <li> {el.count} </li>
+          <li> {el.price} </li>
+          <li> {el.type} </li>
+        </ul>
+      );
+    });
+    return temp;
+  };
   render(): ReactNode {
     return (
       <div id="contract">
@@ -35,6 +60,16 @@ export default class Contract extends Component {
                 <span>合约地址:&nbsp;</span>
                 <span>0xF2389f95fb3F47A2AC01a38854641eaCBC3E648e</span>
               </div>
+              <div className="listTitle">
+                <h3>测试成功用例：</h3>
+                <ul>
+                  <li>能源</li>
+                  <li>数量</li>
+                  <li>价格</li>
+                  <li>交易&nbsp;&nbsp;</li>
+                </ul>
+              </div>
+              <div className="testList">{this.TestCases()}</div>
             </div>
           </div>
           <div className="right">

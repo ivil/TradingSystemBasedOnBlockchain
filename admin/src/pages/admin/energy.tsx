@@ -48,22 +48,23 @@ export default class Energy extends Component {
             <div className="title">
               <h3>ERC20通证管理</h3>
             </div>
-            <br />
-            <br />
             <div className="tip">发行总量：</div>
             <div className="totalSupply">
               <span>21000000 IVIL</span>
             </div>
             <br />
             <div className="divider"></div>
-            <br />
             <div className="row">
               <Input placeholder="value"></Input>
             </div>
             <div className="row">
               <Button className="button">发行 IVIL</Button>
             </div>
+            <div className="divider"></div>
             <br />
+            <div className="tip">
+              注：销毁数量不能大于管理员账户中该能源余额 ！
+            </div>
             <div className="row">
               <Input placeholder="value"></Input>
             </div>
@@ -145,6 +146,9 @@ export default class Energy extends Component {
                 </div>
                 <div className="divider"></div>
                 <br />
+                <div className="tip">
+                  注：销毁数量不能大于管理员账户中该能源余额 ！
+                </div>
               </TabPane>
             </Tabs>
           </div>

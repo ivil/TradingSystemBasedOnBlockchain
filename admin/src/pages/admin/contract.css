@@ -69,3 +69,29 @@
     border-bottom: 2px solid #a1c4fd;
     box-shadow: 0 5px 10px #198cff;
 }
+
+.data>.listTitle {
+    padding-top: 0;
+}
+
+.data>.listTitle>h3 {
+    padding-left: 30px;
+}
+
+.data>.testList {
+    height: calc(100vh - 220px);
+    overflow-y: auto;
+}
+
+.data>.testList>ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.data>.testList>ul>li {
+    width: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -22,10 +22,6 @@ import { ref } from 'vue';
 
 const NavMenu = ref([
     {
-        name: '能源管理',
-        path: '/admin',
-    },
-    {
         name: '我的资产',
         path: '/wealth',
     },
