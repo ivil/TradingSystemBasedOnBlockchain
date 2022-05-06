@@ -114,7 +114,7 @@
     
 <script setup lang='ts'>import { reactive, ref } from 'vue';
 import { Message } from 'equal-vue'
-import { signUp, signIn } from '@/api/business/user.api';
+import { signUp, signIn } from '@/axios/business/user.api';
 import router from '@/router/index'
 const signUpDialog = ref(false)
 const checked = ref(false)

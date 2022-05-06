@@ -9,7 +9,7 @@ export default class Navigation extends Component {
       path: "/contract",
     },
     {
-      name: "能源管理",
+      name: "通证管理",
       path: "/energy",
     },
     {
@@ -21,7 +21,7 @@ export default class Navigation extends Component {
       path: "/",
     },
   ];
-  test = () => {
+  menu = () => {
     let temp: JSX.Element[] = [];
     this.$NavMenu.forEach((item, index) => {
       temp.push(
@@ -38,9 +38,7 @@ export default class Navigation extends Component {
         <span>
           <Link to={"/"}>ivil.world</Link>
         </span>
-        <span>
-          <ul>{this.test()}</ul>
-        </span>
+        <span>{this.menu()}</span>
         <span>基于区块链的能源管理系统</span>
       </div>
     );

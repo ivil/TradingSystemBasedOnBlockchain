@@ -1,3 +1,71 @@
-#contract{
-    
+#contract {
+    min-height: 100vh;
+}
+
+#contract>.content {
+    height: calc(100vh - 60px);
+    background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#contract>.content>.left {
+    background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
+    width: 25%;
+    height: 100%;
+}
+
+#contract>.content>.main {
+    background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+    width: 50%;
+    height: 100%;
+}
+
+#contract>.content>.right {
+    background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
+    width: 25%;
+    height: 100%;
+}
+
+.title {
+    text-align: center;
+    padding-top: 10px;
+}
+
+/* 这个是title下的所有h3标签 */
+.title h3 {
+    font-weight: 600;
+}
+
+/* 这个是直属于title的h3，没有子孙关系 */
+/* .title>h3 {
+    font-weight: 600;
+} */
+
+.row {
+    padding: 10px 20px;
+}
+
+.row>.button {
+    width: 100%;
+    letter-spacing: 5px;
+    color: #00B74A;
+    font-weight: 600;
+}
+
+.data>.row>span {
+    padding: 10px 10px;
+}
+
+.tip {
+    padding: 10px 20px;
+    color: #262626;
+}
+
+.divider {
+    width: calc(100% - 40px);
+    margin: 10px auto;
+    border-bottom: 2px solid #a1c4fd;
+    box-shadow: 0 5px 10px #198cff;
 }

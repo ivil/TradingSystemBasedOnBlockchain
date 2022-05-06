@@ -3,8 +3,9 @@
     <div class="body">
         <div class="left">
             <div class="account">
+                <div style="padding:10px 20px;color:grey;">可用余额：</div>
                 <div class="balance">
-                    <span>可用余额:&nbsp;</span>
+                    <!-- <span>可用余额:&nbsp;</span> -->
                     <span> {{ getBalance() }} </span>
                 </div>
                 <div class="deal">
@@ -246,6 +247,12 @@ const transferEnergy = () => {
                 display: flex;
                 align-items: center;
                 justify-content: center;
+
+                span {
+                    font-weight: 700;
+                    font-size: 25px;
+                    color: orchid;
+                }
             }
 
             .deal {

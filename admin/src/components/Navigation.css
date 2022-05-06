@@ -8,12 +8,12 @@
     padding: 0 20px;
 }
 
-#nav span:nth-child(1) {
+#nav>span:nth-child(1) {
     font: italic 2.5em Georgia, serif;
     letter-spacing: 3px;
 }
 
-#nav span:nth-child(2) ul {
+#nav>span:nth-child(2) {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -21,12 +21,14 @@
     letter-spacing: 3px;
 }
 
-#nav span:nth-child(2) ul li {
+#nav>span:nth-child(2) li {
     padding: 0 20px;
+    font-size: 16px;
 }
 
-#nav span:nth-child(3) {
+#nav>span:nth-child(3) {
     font-weight: 600;
+    font-size: 23px;
     letter-spacing: 1px;
     color: orchid;
 }

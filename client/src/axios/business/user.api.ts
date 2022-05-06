@@ -1,5 +1,5 @@
-import { user } from '@/api/api'
-import instance from '@/api/config/axios.net'
+import { user } from '@/axios/api'
+import instance from '@/axios/config/axios.net'
 
 /**
  * @description 注册
