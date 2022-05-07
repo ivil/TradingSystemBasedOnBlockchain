@@ -22,14 +22,17 @@ export default class Energy extends Component {
 
     let temp: JSX.Element[] = [];
     data.forEach(
-      (el: {
-        symbol: string;
-        totalSupply: string;
-        addressCounts: string;
-        [key: string]: string;
-      }) => {
+      (
+        el: {
+          symbol: string;
+          totalSupply: string;
+          addressCounts: string;
+          [key: string]: string;
+        },
+        index: any
+      ) => {
         temp.push(
-          <ul>
+          <ul key={index}>
             <li> {el.symbol} </li>
             <li> {el.totalSupply} </li>
             <li> {el.addressCounts} </li>

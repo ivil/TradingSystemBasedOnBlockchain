@@ -55,9 +55,12 @@ const toModule = (item: { name: string, path: string }) => {
         h3 {
             font: italic 2.5em Georgia, serif;
             letter-spacing: 3px;
+            cursor: pointer;
         }
-        h2{
+
+        h2 {
             color: orchid;
+            cursor: pointer;
         }
 
         ul {
@@ -69,6 +72,7 @@ const toModule = (item: { name: string, path: string }) => {
             li {
                 margin-right: 20px;
                 font-weight: 600;
+                cursor: pointer;
             }
         }
     }

@@ -23,7 +23,7 @@
 }
 
 #contract>.content>.right {
-    background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
+    background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
     width: 25%;
     height: 100%;
 }

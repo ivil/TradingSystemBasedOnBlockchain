@@ -5,7 +5,7 @@
         <div class="left">
             <div class="box">
                 <h1>未来，已来</h1>
-                <h3>在区块链革命浪潮之中，探寻数字能源。</h3>
+                <h3>在区块链革命浪潮之中，探寻数字能源</h3>
                 <br>
                 <div class="register">
                     <it-input status="success" placeholder="手机号/邮箱" />
@@ -43,7 +43,7 @@ import Navigation from '@/components/Navigation.vue'
             height: 400px;
 
             h1 {
-                font-size: 70px;
+                font-size: 80px;
             }
 
             .register {

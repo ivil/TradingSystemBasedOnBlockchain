@@ -1,9 +1,10 @@
-import { Component, ReactNode } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navigation.css";
+import { Modal } from "antd";
 
-export default class Navigation extends Component {
-  $NavMenu = [
+const Navigation = () => {
+  const NavMenu = [
     {
       name: "合约管理",
       path: "/contract",
@@ -12,35 +13,67 @@ export default class Navigation extends Component {
       name: "通证管理",
       path: "/energy",
     },
-    {
-      name: "战略部署",
-      path: "/",
-    },
-    {
-      name: "关于我们",
-      path: "/",
-    },
+    // {
+    //   name: "战略部署",
+    //   path: "/",
+    // },
+    // {
+    //   name: "关于我们",
+    //   path: "/",
+    // },
   ];
-  menu = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+    window.open("http://localhost:9097");
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const menu = () => {
     let temp: JSX.Element[] = [];
-    this.$NavMenu.forEach((item, index) => {
+    NavMenu.forEach((item: any, index: any) => {
       temp.push(
         <li key={index}>
           <Link to={item.path}>{item.name}</Link>
         </li>
       );
     });
+    temp.push(
+      // react利用key来识别组件，它是一种身份标识标识
+      <li key={'#'}>
+        <Link to={"#"} onClick={showModal}>
+          {"前往客户端"}
+        </Link>
+      </li>
+    );
     return temp;
   };
-  render(): ReactNode {
-    return (
-      <div id="nav">
-        <span>
-          <Link to={"/"}>ivil.world</Link>
-        </span>
-        <span>{this.menu()}</span>
-        <span>基于区块链的能源管理系统</span>
-      </div>
-    );
-  }
-}
+
+  return (
+    <div id="nav">
+      <span>
+        <Link to={"/"}>ivil.world</Link>
+      </span>
+      <span>{menu()}</span>
+      <span>基于区块链的能源管理系统</span>
+      <Modal
+        title="提示"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <h3>是否前往客户端？</h3>
+      </Modal>
+    </div>
+  );
+};
+
+export default Navigation;
