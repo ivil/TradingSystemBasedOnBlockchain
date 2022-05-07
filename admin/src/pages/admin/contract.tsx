@@ -1,16 +1,22 @@
 import "./contract.css";
-import Navigation from "../../components/Navigation";
-import { Button, Input } from "antd";
+import Navigation from "../../components/Navigation/Navigation";
+import { Button, Input, message } from "antd";
 import migrate from "../../web3/scripts/Migrate";
-import { autoCreateEnergies } from "../../web3/scripts/autoCreateEnergies";
+import * as scripts from "../../web3/scripts/autoCreateEnergies";
+import * as market from "../../web3/api/market.api";
+import Loading from "../../components/Loading/Loading";
+import { useState } from "react";
 
 const Mock = require("mockjs");
 
 const Contract = () => {
-  const adminAccount = {
+  const [isShow, setIsShow] = useState(false);
+
+  const [adminAccount, setAdminAccount] = useState({
     address: "",
     privateKey: "",
-  };
+  });
+
   // 获取测试用例
   const TestCases = () => {
     let temp: JSX.Element[] = [];
@@ -36,15 +42,33 @@ const Contract = () => {
     });
     return temp;
   };
+  const [contractAddress, setContractAddress] = useState<string | null>("");
   // 部署合约
   const migrateContract = () => {
+    if (adminAccount.address == "" || adminAccount.privateKey == "") {
+      message.error("请输入地址和私钥！");
+      return;
+    }
+    setIsShow(true);
     sessionStorage.setItem("adminAccount", adminAccount.address);
     sessionStorage.setItem("adminPrivateKey", adminAccount.privateKey);
-    migrate(adminAccount.address, adminAccount.privateKey);
+    migrate(adminAccount.address, adminAccount.privateKey).then(() => {
+      setContractAddress(sessionStorage.getItem("contractAddress"));
+      setIsShow(false);
+    });
+  };
+
+  // 自动创建能源
+  const autoCreateEnergies = () => {
+    setIsShow(true);
+    scripts.autoCreateEnergies().then(() => {
+      setIsShow(false);
+    });
   };
 
   return (
     <div id="contract">
+      <Loading isShow={isShow} />
       <Navigation />
       <div className="content">
         <div className="left">
@@ -56,7 +80,9 @@ const Contract = () => {
           <div className="row">
             <Input
               onChange={(e) => {
-                adminAccount.address = e.target.value;
+                let temp = JSON.parse(JSON.stringify(adminAccount));
+                temp.address = e.target.value;
+                setAdminAccount(temp);
               }}
               placeholder="account address"
             ></Input>
@@ -64,7 +90,9 @@ const Contract = () => {
           <div className="row">
             <Input
               onChange={(e) => {
-                adminAccount.privateKey = e.target.value;
+                let temp = JSON.parse(JSON.stringify(adminAccount));
+                temp.privateKey = e.target.value;
+                setAdminAccount(temp);
               }}
               placeholder="private key"
             ></Input>
@@ -83,7 +111,7 @@ const Contract = () => {
           <div className="data">
             <div className="row">
               <span>合约地址:&nbsp;</span>
-              <span>0xF2389f95fb3F47A2AC01a38854641eaCBC3E648e</span>
+              <span>{contractAddress}</span>
             </div>
             <div className="listTitle">
               <h3>测试成功用例：</h3>

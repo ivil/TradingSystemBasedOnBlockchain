@@ -1,5 +1,5 @@
 import { Component, ReactNode } from "react";
-import Navigation from "../../components/Navigation";
+import Navigation from "../../components/Navigation/Navigation";
 import "./home.css";
 
 export default class Home extends Component<any, any> {

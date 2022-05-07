@@ -3,7 +3,7 @@ import Contract from '../config/contract.abi'
 
 const nodeHost = "http://127.0.0.1:7777"
 const abi = Contract.TradingSystem.abi
-const address = Contract.TradingSystem.address
+// const address = Contract.TradingSystem.address
 
 /**
  * @description 创建web3实例
@@ -62,6 +62,7 @@ export const createContract = async (abi: any, address: string) => {
  * @returns 合约实例及当前账户地址
  */
 export const contractInstance = async () => {
+    const address = sessionStorage.getItem('contractAddress') ||''
     const [contract, account] = await createContract(abi, address)
     return [contract, account]
 }

@@ -1,10 +1,7 @@
 // 合约部署之后会将合约地址存入Vuex，此处就会同步更新
-const address = '0xB1A444DCaE845f889c53ec9D0A69eEe86CDCdC19'
-
 const Contract = {
     TradingSystem: {
-        // address:'',
-        address,
+        address:'',
         abi: [
             {
                 "inputs": [],

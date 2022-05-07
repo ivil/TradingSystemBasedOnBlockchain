@@ -8,26 +8,7 @@ export const transactionsOfPool = async () => {
     return await contract.methods.transactionsOfPool().call()
 }
 
-/**
- * @dev 获取交易池中的未被响应交易
- * @param ref ref响应式变量
- */
-export const getDeals = (ref: any) => {
-    ref.value = []
-    transactionsOfPool().then(value => {
-        value.forEach((el: any) => {
-            if (!el.status) {
-                const deal = {
-                    symbol: el.symbol,
-                    count: el.value,
-                    price: el.price,
-                    index: el.index
-                }
-                ref.value.push(deal)
-            }
-        })
-    })
-}
+
 
 /**
  * @dev 发布需求（出售）
@@ -67,24 +48,4 @@ export const confirm_sell = async (index: number) => {
 export const getPersonalPool = async () => {
     const [contract, account] = await contractInstance()
     return await contract.methods.getPersonalPool().call({ from: account })
-}
-
-/**
- * @dev 获取个人交易记录
- * @param ref ref定义的响应式变量
- */
-export const getDealReocrds = (ref: any) => {
-    ref.value = []
-    getPersonalPool().then(value => {
-        value.forEach((el: any) => {
-            const record = {
-                symbol: el.symbol,
-                count: el.value,
-                price: el.price,
-                status: el.status,
-                index: el.index
-            }
-            ref.value.push(record)
-        })
-    })
 }

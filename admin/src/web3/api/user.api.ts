@@ -28,6 +28,11 @@ export const balanceOf = async () => {
     return await contract.methods.balanceOf(account).call()
 }
 
+// 获取余额
+export const getBalance = async () => {
+    return await balanceOf() + ' ' + await symbol()
+}
+
 /**
  * 
  * @returns 获取生态积分总量
@@ -67,26 +72,6 @@ export const getTokenBalance = async (symbol: string) => {
     return await contract.methods.getTokenBalance(symbol, account).call()
 }
 
-/**
- * 
- * @param ref ref响应式变量
- */
-export const getEnergyBalance = (ref: any) => {
-    ref.value = []
-    getAllTokensInfo().then((value) => {
-        value.forEach((el: { symbol: string, [key: string]: string }) => {
-            let energy = {
-                avator: '',
-                symbol: el.symbol,
-                count: ''
-            }
-            getTokenBalance(el.symbol).then(value => {
-                energy.count = value
-                ref.value.push(energy)
-            })
-        })
-    })
-}
 
 /**
  * @dev 通证转账
