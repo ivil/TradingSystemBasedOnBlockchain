@@ -45,7 +45,7 @@ const Contract = () => {
   const [contractAddress, setContractAddress] = useState<string | null>("");
   // 部署合约
   const migrateContract = () => {
-    if (adminAccount.address == "" || adminAccount.privateKey == "") {
+    if (adminAccount.address === "" || adminAccount.privateKey === "") {
       message.error("请输入地址和私钥！");
       return;
     }
