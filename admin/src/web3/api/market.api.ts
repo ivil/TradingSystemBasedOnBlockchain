@@ -49,3 +49,4 @@ export const getPersonalPool = async () => {
     const [contract, account] = await contractInstance()
     return await contract.methods.getPersonalPool().call({ from: account })
 }
+

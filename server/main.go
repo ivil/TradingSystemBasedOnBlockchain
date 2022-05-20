@@ -6,6 +6,7 @@ import (
 	"server/router"
 )
 
+
 func main() {
 	// 连接数据库
 	mysql.InitMysql()
@@ -16,4 +17,6 @@ func main() {
 	// 注册路由
 	r := router.SetupRouter()
 	r.Run("localhost:9091")
+
+	
 }

@@ -1,7 +1,7 @@
 // 组件外直接引入store，组件外使用useStore组合API得到的是undefined，这个时候还没挂载到vue上去
 import store from '@/store'
 // 合约部署之后会将合约地址存入Vuex，此处就会同步更新
-const address = '0x74625fc7DcF89743841Cc4F3990a8CBeDdF2fd67' || sessionStorage.getItem('contractAddress') || store.state.contractAddress
+const address = '0x7F5dc9d9312257fCaf3bf71e648D18e6f2bB6412' || sessionStorage.getItem('contractAddress') || store.state.contractAddress
 
 const Contract = {
     TradingSystem: {
@@ -134,32 +134,6 @@ const Contract = {
                 "inputs": [
                     {
                         "internalType": "uint256",
-                        "name": "index",
-                        "type": "uint256"
-                    }
-                ],
-                "name": "buy",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    {
-                        "internalType": "uint256",
-                        "name": "index",
-                        "type": "uint256"
-                    }
-                ],
-                "name": "cancelSell",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    {
-                        "internalType": "uint256",
                         "name": "value",
                         "type": "uint256"
                     }
@@ -263,19 +237,6 @@ const Contract = {
                 "type": "function"
             },
             {
-                "inputs": [],
-                "name": "depthOfPool",
-                "outputs": [
-                    {
-                        "internalType": "uint256",
-                        "name": "",
-                        "type": "uint256"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
                 "inputs": [
                     {
                         "internalType": "uint256",
@@ -371,51 +332,6 @@ const Contract = {
                 "type": "function"
             },
             {
-                "inputs": [],
-                "name": "getPersonalPool",
-                "outputs": [
-                    {
-                        "components": [
-                            {
-                                "internalType": "address",
-                                "name": "sender",
-                                "type": "address"
-                            },
-                            {
-                                "internalType": "string",
-                                "name": "symbol",
-                                "type": "string"
-                            },
-                            {
-                                "internalType": "uint256",
-                                "name": "value",
-                                "type": "uint256"
-                            },
-                            {
-                                "internalType": "uint256",
-                                "name": "price",
-                                "type": "uint256"
-                            },
-                            {
-                                "internalType": "bool",
-                                "name": "status",
-                                "type": "bool"
-                            },
-                            {
-                                "internalType": "uint256",
-                                "name": "index",
-                                "type": "uint256"
-                            }
-                        ],
-                        "internalType": "struct TradingSystem.Transaction[]",
-                        "name": "",
-                        "type": "tuple[]"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
                 "inputs": [
                     {
                         "internalType": "string",
@@ -471,29 +387,6 @@ const Contract = {
                 "type": "function"
             },
             {
-                "inputs": [
-                    {
-                        "internalType": "string",
-                        "name": "symbol",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "value",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "price",
-                        "type": "uint256"
-                    }
-                ],
-                "name": "sell",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
                 "inputs": [],
                 "name": "symbol",
                 "outputs": [
@@ -514,51 +407,6 @@ const Contract = {
                         "internalType": "uint256",
                         "name": "",
                         "type": "uint256"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [],
-                "name": "transactionsOfPool",
-                "outputs": [
-                    {
-                        "components": [
-                            {
-                                "internalType": "address",
-                                "name": "sender",
-                                "type": "address"
-                            },
-                            {
-                                "internalType": "string",
-                                "name": "symbol",
-                                "type": "string"
-                            },
-                            {
-                                "internalType": "uint256",
-                                "name": "value",
-                                "type": "uint256"
-                            },
-                            {
-                                "internalType": "uint256",
-                                "name": "price",
-                                "type": "uint256"
-                            },
-                            {
-                                "internalType": "bool",
-                                "name": "status",
-                                "type": "bool"
-                            },
-                            {
-                                "internalType": "uint256",
-                                "name": "index",
-                                "type": "uint256"
-                            }
-                        ],
-                        "internalType": "struct TradingSystem.Transaction[]",
-                        "name": "",
-                        "type": "tuple[]"
                     }
                 ],
                 "stateMutability": "view",
@@ -643,6 +491,158 @@ const Contract = {
                         "type": "bool"
                     }
                 ],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "depthOfPool",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "transactionsOfPool",
+                "outputs": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "sender",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "symbol",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "value",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "price",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bool",
+                                "name": "status",
+                                "type": "bool"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "index",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct TradingSystem.Transaction[]",
+                        "name": "",
+                        "type": "tuple[]"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "getPersonalPool",
+                "outputs": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "sender",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "symbol",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "value",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "price",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bool",
+                                "name": "status",
+                                "type": "bool"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "index",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct TradingSystem.Transaction[]",
+                        "name": "",
+                        "type": "tuple[]"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "symbol",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "value",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "price",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "sell",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "index",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "cancelSell",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "index",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "buy",
+                "outputs": [],
                 "stateMutability": "nonpayable",
                 "type": "function"
             }

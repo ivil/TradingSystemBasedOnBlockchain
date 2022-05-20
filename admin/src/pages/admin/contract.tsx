@@ -55,6 +55,7 @@ const Contract = () => {
     migrate(adminAccount.address, adminAccount.privateKey).then(() => {
       setContractAddress(sessionStorage.getItem("contractAddress"));
       setIsShow(false);
+      alert("部署成功！");
     });
   };
 

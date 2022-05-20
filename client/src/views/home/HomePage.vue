@@ -7,10 +7,10 @@
                 <h1>未来，已来</h1>
                 <h3>在区块链革命浪潮之中，探寻数字能源</h3>
                 <br>
-                <div class="register">
+                <!-- <div class="register">
                     <it-input status="success" placeholder="手机号/邮箱" />
                     <it-button type="primary" size="big">立即注册</it-button>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="right">
@@ -41,6 +41,7 @@ import Navigation from '@/components/Navigation.vue'
 
         .box {
             height: 400px;
+            padding-top: 20px;
 
             h1 {
                 font-size: 80px;
