@@ -125,8 +125,8 @@ interface IERC20 {
 contract ERC20 is IERC20 {
     using SafeMath for uint256;
 
-    string private _name = "ivil.world"; //代币名称
-    string private _symbol = "IVIL"; //代币符号
+    string private _name = "ivil.world"; //通证名称
+    string private _symbol = "IVIL"; //通证符号
     uint8 private _decimals = 0; //小数位数，可拆分的最小单位
     uint256 private _totalSupply = 21000000; //积分总量
 
@@ -228,16 +228,16 @@ contract IvilWorld is ERC20 {
     using StringUtils for string;
 
     struct Token {
-        string name; //代币名称
-        string symbol; //代币符号
-        uint8 decimals; //代币小数位数，代币最小单位，2可以表示我们可以拥有0.01个代币
-        uint256 totalSupply; //代币总量
+        string name; //通证名称
+        string symbol; //通证符号
+        uint8 decimals; //通证小数位数，代币最小单位，2可以表示我们可以拥有0.01个代币
+        uint256 totalSupply; //通证总量
     }
 
     address private ice; //掌管被冻结的财产
     address private root; //超级管理员
 
-    mapping(address => mapping(string => uint256)) private balance; //代币余额
+    mapping(address => mapping(string => uint256)) private balance; //通证余额
 
     Token[] private tokens;
     /*

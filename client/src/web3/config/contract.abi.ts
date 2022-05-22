@@ -1,7 +1,7 @@
 // 组件外直接引入store，组件外使用useStore组合API得到的是undefined，这个时候还没挂载到vue上去
 import store from '@/store'
 // 合约部署之后会将合约地址存入Vuex，此处就会同步更新
-const address = '0x7F5dc9d9312257fCaf3bf71e648D18e6f2bB6412' || sessionStorage.getItem('contractAddress') || store.state.contractAddress
+const address = '0xB2927E019177135ad5bbE2371691E6CA7F500c35' || sessionStorage.getItem('contractAddress') || store.state.contractAddress
 
 const Contract = {
     TradingSystem: {
