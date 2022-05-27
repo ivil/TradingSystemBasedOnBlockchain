@@ -57,3 +57,4 @@ func QueryLoginInfo(signIn *SignIn) (option bool, err error) {
 		}
 	}
 }
+

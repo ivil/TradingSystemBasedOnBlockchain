@@ -1,9 +1,10 @@
 import Web3 from 'web3'
 import Contract from '@/web3/config/contract.abi'
+import { getContractAddress } from '@/axios/business/user.api'
 
 const nodeHost = "http://127.0.0.1:7777"
 const abi = Contract.TradingSystem.abi
-const address = Contract.TradingSystem.address
+// const address = Contract.TradingSystem.address
 
 /**
  * @description 创建web3实例
@@ -62,6 +63,8 @@ export const createContract = async (abi: any, address: string) => {
  * @returns 合约实例及当前账户地址
  */
 export const contractInstance = async () => {
+    const address = await getContractAddress()
+    console.log(address);
     const [contract, account] = await createContract(abi, address)
     return [contract, account]
 }

@@ -1,4 +1,6 @@
 import Contract from '../config/contract.abi'
+import { storeContract } from "../../axios/business/contract.api";
+
 const Web3 = require('web3')
 const Tx = require('ethereumjs-tx').Transaction
 
@@ -29,5 +31,6 @@ const migrate = async (address: string, privateKey: string) => {
     console.log(result);
     const { contractAddress } = result
     sessionStorage.setItem('contractAddress', contractAddress)
+    await storeContract(contractAddress)
 }
 export default migrate

@@ -112,7 +112,9 @@ const Contract = () => {
           <div className="data">
             <div className="row">
               <span>合约地址:&nbsp;</span>
-              <span>{contractAddress || sessionStorage.getItem("contractAddress")}</span>
+              <span>
+                {contractAddress || sessionStorage.getItem("contractAddress")}
+              </span>
             </div>
             <div className="listTitle">
               <h3>测试成功用例：</h3>
