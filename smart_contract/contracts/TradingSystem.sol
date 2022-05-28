@@ -7,53 +7,29 @@ pragma solidity >=0.4.24;
  * @dev 具有可在错误时恢复的安全检查的数学运算
  */
 library SafeMath {
-    /**
-     * @dev 将两个数字相乘，异常时恢复。
-     */
     function mul(uint256 a, uint256 b) internal pure returns (uint256) {
         if (a == 0) {
             return 0;
         }
-
         uint256 c = a * b;
         require(c / a == b);
-
         return c;
     }
-
-    /**
-     * @dev 两数相除，异常时恢复
-     */
     function div(uint256 a, uint256 b) internal pure returns (uint256) {
         require(b > 0);
         uint256 c = a / b;
-
         return c;
     }
-
-    /**
-     * @dev 两数相减，在溢出时恢复
-     */
     function sub(uint256 a, uint256 b) internal pure returns (uint256) {
         require(b <= a);
         uint256 c = a - b;
-
         return c;
     }
-
-    /**
-     * @dev 两数相加，出现异常时恢复
-     */
     function add(uint256 a, uint256 b) internal pure returns (uint256) {
         uint256 c = a + b;
         require(c >= a);
-
         return c;
     }
-
-    /**
-     * @dev 取模运算，异常时恢复
-     */
     function mod(uint256 a, uint256 b) internal pure returns (uint256) {
         require(b != 0);
         return a % b;
@@ -89,32 +65,14 @@ library StringUtils {
 interface IERC20 {
     // methods
     function totalSupply() external view returns (uint256);
-
     function balanceOf(address who) external view returns (uint256);
-
-    function allowance(address owner, address spender)
-        external
-        view
-        returns (uint256);
-
+    function allowance(address owner, address spender) external view returns (uint256);
     function transfer(address to, uint256 value) external returns (bool);
-
     function approve(address spender, uint256 value) external returns (bool);
-
-    function transferFrom(
-        address from,
-        address to,
-        uint256 value
-    ) external returns (bool);
-
+    function transferFrom(address from,address to,uint256 value) external returns (bool);
     // event
     event Transfer(address indexed from, address indexed to, uint256 value);
-
-    event Approval(
-        address indexed owner,
-        address indexed spender,
-        uint256 value
-    );
+    event Approval(address indexed owner,address indexed spender, uint256 value);
 }
 
 //=======================================================================================
@@ -470,69 +428,36 @@ contract TradingSystem is IvilWorld {
     }
 
     // 发布
-    function sell(
-        string memory symbol,
-        uint256 value,
-        uint256 price
-    ) public {
+    function sell(string memory symbol, uint256 value, uint256 price) public {
         getLocationOfToken(symbol);
-        // require(isExisted, "The token is not existed !");
-        require(
-            value <= getTokenBalance(symbol, msg.sender),
-            "The token is not enough !"
-        );
-        Transaction memory deal = Transaction(
-            msg.sender,
-            symbol,
-            value,
-            price,
-            false,
-            counter //从0开始计数
-        );
+        require(value <= getTokenBalance(symbol, msg.sender), "The token is not enough !");
+        Transaction memory deal = Transaction(msg.sender,symbol,value,price,false,counter); //counter:从0开始计数
         tradingPool.push(deal);
         personalPool[msg.sender].push(deal);
         freezeToken(symbol, value);
         counter++;
     }
-
     // 取消发布
     function cancelSell(uint256 index) public {
         require(index <= counter, "The transaction is not existed !");
-        require(
-            tradingPool[index].status == false,
-            "The transaction has already been completed !"
-        );
+        require(tradingPool[index].status == false,"The transaction has already been completed !");
         require(msg.sender == tradingPool[index].sender);
         unfreezeToken(tradingPool[index].symbol, tradingPool[index].value);
         tradingPool[index].status = true;
-
         (uint256 i, ) = getDealFromPersonalPool(index, msg.sender);
-        // require(isExisted, "you does not have this transaction !");
         personalPool[msg.sender][i].status = true;
     }
-
     // 响应
     function buy(uint256 index) public {
-        require(
-            tradingPool[index].sender != msg.sender,
-            "You can not buy your product !"
-        );
+        require(tradingPool[index].sender != msg.sender,"You can not buy your product !");
         require(index <= counter, "The transaction is not existed !");
-        require(
-            tradingPool[index].status == false,
-            "The transaction has already been completed !"
-        );
+        require(tradingPool[index].status == false,"The transaction has already been completed !");
         transfer(tradingPool[index].sender, tradingPool[index].price);
         unfreezeToken(tradingPool[index].symbol, tradingPool[index].value);
         tradingPool[index].status = true;
-
         personalPool[msg.sender].push(tradingPool[index]);
-
         // 更新发布者的交易记录
-        (uint256 i, ) = getDealFromPersonalPool(
-            index,
-            tradingPool[index].sender
-        );
+        (uint256 i, ) = getDealFromPersonalPool(index, tradingPool[index].sender);
         personalPool[tradingPool[index].sender][i].status = true;
     }
 }

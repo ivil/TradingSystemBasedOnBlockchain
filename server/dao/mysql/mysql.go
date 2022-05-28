@@ -6,9 +6,7 @@ import (
 	"log"
 	"server/config"
 )
-
 var DB *sql.DB
-
 func InitMysql() (err error) {
 	DB, err = sql.Open("mysql", config.DbConfig)
 	if err != nil {
@@ -23,7 +21,6 @@ func InitMysql() (err error) {
 	}
 	return DB.Ping()
 }
-
 func Close() {
 	DB.Close()
 	log.Println("已关闭与数据库的连接！")

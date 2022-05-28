@@ -37,7 +37,7 @@ func ReadContractAddress() (address string, err error) {
 			rows.Scan(&address)
 			addresses = append(addresses, address)
 		}
-		log.Println(addresses)
-		return addresses[0], nil
+		// log.Println(addresses)
+		return addresses[0], err
 	}
 }
