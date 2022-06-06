@@ -135,10 +135,18 @@
                             <span> {{ item.symbol }} </span>
                             <span> {{ item.count }} </span>
                             <span> {{ item.price }} </span>
-                            <span>
-                                <it-button type="primary" outlined style="background: transparent;"
-                                    @click="res_sell(Number(item.index))">购买</it-button>
-                            </span>
+                            <template v-if="item.sender !== currentAccount">
+                                <span>
+                                    <it-button type="primary" outlined style="background: transparent;"
+                                        @click="res_sell(Number(item.index))">购买</it-button>
+                                </span>
+                            </template>
+                            <template v-if="item.sender === currentAccount">
+                                <span>
+                                    <it-button type="primary" outlined style="background: transparent;"
+                                        @click="cancel_sell(Number(item.index))">取消</it-button>
+                                </span>
+                            </template>
                         </div>
                     </template>
                 </template>
@@ -165,9 +173,9 @@
 <script setup lang='ts'>
 import Navigation from '@/components/Navigation.vue'
 import { onMounted, reactive, ref } from 'vue'
-import { post_sell, confirm_sell, getDeals, getDealReocrds } from '@/web3/api/market.api'
+import { post_sell, confirm_sell, getDeals, getDealReocrds, cancelSell } from '@/web3/api/market.api'
 import KCurve from '@/utils/k-curve'
-import { listenAccountsChanged } from '@/web3/api/common.api';
+import { getAccount, listenAccountsChanged } from '@/web3/api/common.api';
 import { getAllTokensInfo } from '@/web3/api/user.api';
 
 onMounted(() => {
@@ -226,9 +234,17 @@ const deals = ref([
         symbol: '',
         count: '',
         price: '',
-        index: ''
+        index: '',
+        sender: ''
     }
 ])
+// 当前账户地址
+const currentAccount = ref('')
+const getCurrentAccount = () => {
+    getAccount().then(value => {
+        currentAccount.value = value
+    })
+}
 
 // 模拟交易市场数据
 // deals.value = Mock.mock({
@@ -304,6 +320,12 @@ const res_sell = (index: number) => {
         refresh()
     })
 }
+const cancel_sell = (index: number) => {
+    cancelSell(index).then(value => {
+        console.log(value);
+        refresh()
+    })
+}
 
 // 获取个人交易记录
 const records = ref([
@@ -320,6 +342,7 @@ const records = ref([
 const refresh = () => {
     getDeals(deals)
     getDealReocrds(records)
+    getCurrentAccount()
 }
 refresh()
 listenAccountsChanged(() => {

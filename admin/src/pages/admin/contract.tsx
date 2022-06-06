@@ -163,9 +163,9 @@ const Contract = () => {
                 自动发布出售需求
               </Button>
             </div>
-            <div className="row">
+            {/* <div className="row">
               <Button className="button">自动发布购买需求</Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -21,7 +21,8 @@ export const getDeals = (ref: any) => {
                     symbol: el.symbol,
                     count: el.value,
                     price: el.price,
-                    index: el.index
+                    index: el.index,
+                    sender: el.sender
                 }
                 ref.value.push(deal)
             }
