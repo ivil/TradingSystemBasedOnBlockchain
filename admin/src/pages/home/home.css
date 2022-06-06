@@ -1,0 +1,32 @@
+#home {
+    min-height: 100vh;
+}
+
+#home>.content {
+    height: calc(100vh - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
+}
+
+#home>.content>div {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#home>.content>div>.box>h1 {
+    font-size: 80px;
+    font-weight: 600;
+}
+
+#home>.content>div>.box>h2 {
+    font-weight: 600;
+}
+
+#home>.content>div>.box>h3 {
+    height: 100px;
+}
