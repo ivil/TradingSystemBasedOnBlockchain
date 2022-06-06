@@ -2,7 +2,7 @@ import "./contract.css";
 import Navigation from "../../components/Navigation/Navigation";
 import { Button, Input, message } from "antd";
 import migrate from "../../web3/scripts/Migrate";
-import * as scripts from "../../web3/scripts/autoCreateEnergies";
+import * as scripts from "../../web3/scripts/autoCreateDemo";
 import * as market from "../../web3/api/market.api";
 import Loading from "../../components/Loading/Loading";
 import { useState } from "react";
@@ -63,7 +63,17 @@ const Contract = () => {
   const autoCreateEnergies = () => {
     setIsShow(true);
     scripts.autoCreateEnergies().then(() => {
-      setIsShow(false);
+      setTimeout(() => {
+        setIsShow(false);
+      }, 5000);
+    });
+  };
+  const autoCreateDemands = () => {
+    setIsShow(true);
+    scripts.autoCreateDemands().then(() => {
+      setTimeout(() => {
+        setIsShow(false);
+      }, 5000);
     });
   };
 
@@ -142,14 +152,16 @@ const Contract = () => {
             <div className="divider"></div>
             <br />
             <div className="tip">以下操作无身份限制，测试用例约莫30例</div>
-            <div className="row">
+            {/* <div className="row">
               <Input placeholder="Test Account Address"></Input>
             </div>
             <div className="row">
               <Input placeholder="Test Account PrivateKey"></Input>
-            </div>
+            </div> */}
             <div className="row">
-              <Button className="button">自动发布出售需求</Button>
+              <Button className="button" onClick={autoCreateDemands}>
+                自动发布出售需求
+              </Button>
             </div>
             <div className="row">
               <Button className="button">自动发布购买需求</Button>

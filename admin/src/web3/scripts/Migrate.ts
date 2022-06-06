@@ -20,7 +20,8 @@ const migrate = async (address: string, privateKey: string) => {
         data: ByteCode
     }
 
-    const tx = new Tx(txObject, { chain: 'ropsten', hardfork: 'petersburg' })
+    // const tx = new Tx(txObject, { chain: 'ropsten', hardfork: 'petersburg' })
+    const tx = new Tx(txObject)
     tx.sign(pkBuffer)
 
     const serializedTx = tx.serialize() //序列化

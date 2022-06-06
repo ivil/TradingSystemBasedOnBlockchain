@@ -14,7 +14,7 @@ type Contract struct {
 func AddContractAddress(contract *Contract) (err error) {
 	statement, err := mysql.DB.Prepare("insert into contract set contractAddress=?")
 	if err != nil {
-		log.Println("注册预编译SQL语句出错！")
+		log.Println("预编译SQL语句出错！")
 	}
 	res, err := statement.Exec(contract.ContractAddress)
 	if err != nil {

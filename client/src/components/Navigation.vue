@@ -29,10 +29,10 @@ const NavMenu = ref([
         name: '交易市场',
         path: '/market',
     },
-    {
-        name: '链上数据',
-        path: '/blockInfo',
-    }
+    // {
+    //     name: '链上数据',
+    //     path: '/blockInfo',
+    // }
 ])
 const toModule = (item: { name: string, path: string }) => {
     router.push(item.path)
