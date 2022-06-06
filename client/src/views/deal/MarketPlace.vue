@@ -143,7 +143,7 @@
                             </template>
                             <template v-if="item.sender === currentAccount">
                                 <span>
-                                    <it-button type="primary" outlined style="background: transparent;"
+                                    <it-button type="danger" outlined style="background: transparent;"
                                         @click="cancel_sell(Number(item.index))">取消</it-button>
                                 </span>
                             </template>

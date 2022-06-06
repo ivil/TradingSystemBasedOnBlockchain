@@ -224,7 +224,7 @@ const Energy = () => {
               </div>
               <div className="row">
                 <Button className="button" onClick={createEnergy}>
-                  铸造能源
+                  上架能源
                 </Button>
               </div>
               <br />
@@ -240,7 +240,7 @@ const Energy = () => {
               </div>
               <div className="row">
                 <Button className="button" onClick={destoryEnergy}>
-                  禁售能源
+                  下架能源
                 </Button>
               </div>
               <br />
@@ -249,7 +249,7 @@ const Energy = () => {
             <TabPane tab="能源发行量管理" key="2">
               <div className="tip">以下操作仅限管理员账户</div>
               <div className="divider"></div>
-              <div className="tip">发行指定能源：</div>
+              <div className="tip">增发指定能源：</div>
               <div className="inputs">
                 <div className="row">
                   <Input
@@ -270,12 +270,12 @@ const Energy = () => {
               </div>
               <div className="row">
                 <Button className="button" onClick={increaseEnergy}>
-                  发行能源
+                  增发
                 </Button>
               </div>
               <div className="divider"></div>
               <br />
-              <div className="tip">销毁指定能源：</div>
+              <div className="tip">回收部分能源：</div>
               <div className="inputs">
                 <div className="row">
                   <Input
@@ -296,7 +296,7 @@ const Energy = () => {
               </div>
               <div className="row">
                 <Button className="button" onClick={decreaseEnergy}>
-                  销毁能源
+                  回收
                 </Button>
               </div>
               <div className="divider"></div>

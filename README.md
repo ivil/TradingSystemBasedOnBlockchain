@@ -2,17 +2,6 @@
 
 基于区块链的能源交易系统实现——CUMT信息安全专业毕业设计
 
-<!-- PROJECT SHIELDS -->
-
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[][linkedin-url]
-
-
-
 
 ## 目录
 
@@ -20,7 +9,7 @@
   - [开发前的配置要求](#开发前的配置要求)
   - [安装步骤](#安装步骤)
 - [文件目录说明](#文件目录说明)
-- [开发的架构](#开发的架构)
+- [软件架构](#软件架构)
 - [部署](#部署)
 - [使用到的框架](#使用到的框架)
 - [贡献者](#贡献者)
@@ -40,26 +29,19 @@
 
 ###### **安装步骤**
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the project
 
 ```sh
-git clone https://github.com/shaojintian/Best_README_template.git
+git clone https://github.com/ivil/TradingSystemBasedOnBlockchain
 ```
 
 ### 文件目录说明
-eg:
-
 ```
 test
 
 ```
 
-
-
-
-
-### 开发的架构 
+### 软件架构 
 
 请阅读[ARCHITECTURE.md](https://github.com/shaojintian/Best_README_template/blob/master/ARCHITECTURE.md) 查阅为该项目的架构。
 

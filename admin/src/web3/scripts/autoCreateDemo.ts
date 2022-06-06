@@ -36,7 +36,7 @@ export const autoCreateEnergies = async () => {
         web3.eth.sendSignedTransaction(raw)
         nonce++
     }
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 15; i++) {
         const el = Mock.mock({
             name: /\w{6,11}/,
             symbol: /[A-Z]{2,4}/,

@@ -143,15 +143,15 @@ const Contract = () => {
             <h3>测试脚本</h3>
           </div>
           <div className="script">
-            <div className="tip">以下操作仅限管理员账户，测试用例约莫30例</div>
+            <div className="tip">以下操作仅限管理员账户，测试用例约莫15例</div>
             <div className="row">
               <Button className="button" onClick={autoCreateEnergies}>
-                自动创建能源
+                自动上架能源
               </Button>
             </div>
             <div className="divider"></div>
             <br />
-            <div className="tip">以下操作无身份限制，测试用例约莫30例</div>
+            <div className="tip">以下操作无身份限制，测试用例约莫15例</div>
             {/* <div className="row">
               <Input placeholder="Test Account Address"></Input>
             </div>
