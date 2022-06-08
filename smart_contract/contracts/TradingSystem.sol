@@ -188,7 +188,7 @@ contract IvilWorld is ERC20 {
     struct Token {
         string name; //通证名称
         string symbol; //通证符号
-        uint8 decimals; //通证小数位数，代币最小单位，2可以表示我们可以拥有0.01个代币
+        uint8 decimals; //通证小数位数
         uint256 totalSupply; //通证总量
     }
 
@@ -374,7 +374,6 @@ contract IvilWorld is ERC20 {
 
 contract TradingSystem is IvilWorld {
     using SafeMath for uint256;
-    // using StringUtils for string;
 
     struct Transaction {
         address sender; //需求发布者
@@ -384,9 +383,9 @@ contract TradingSystem is IvilWorld {
         bool status; //交易状态，是否成功
         uint256 index; //交易流水号
     }
-    // mapping(uint256 => Transaction) private tradingPool; //交易池，包含所有交易
-    Transaction[] private tradingPool;
-    // Transaction[] private transactions; //用于存放池中未完成的交易
+
+    Transaction[] private tradingPool;  //交易池
+
     mapping(address => Transaction[]) personalPool; //个人交易记录列表
 
     uint256 private counter = 0;
