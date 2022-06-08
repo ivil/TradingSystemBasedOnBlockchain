@@ -4,11 +4,7 @@
 
 ### 视频演示
 
-```html
-<video id="video" controls="" preload="none" poster="封面">
-      <source id="mp4" src="./static(readme)/TradingSystemBasedOnBlockchain.mp4" type="video/mp4">
-</videos>
-```
+[项目演示地址](https://www.ivil.world/TradingSystemBasedOnBlockchain.mp4)
 
 
 ## 目录
